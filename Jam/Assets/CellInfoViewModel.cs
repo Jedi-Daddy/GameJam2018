@@ -22,5 +22,6 @@ public class CellInfoViewModel : MonoBehaviour
       CoordsInSegment = CellInfo.Coords,
       SegmentId = segmentId
     });
+    //GameFieldDrawer.DrawHero();
   }
 }
