@@ -15,20 +15,25 @@ public class GameFieldDraw : MonoBehaviour
 	void Start ()
 	{
     _maze = MazeBuilder.BuildMaze(4);
-	  var mazeSegmentOffset = CellSize*5 + WallWidth*4 + 10;
+	  var segmentWidth = CellSize*5 + WallWidth*4;
+    var mazeSegmentOffset = segmentWidth + 10;
     var center = ContainerCube.transform.position;
 	  var cubeWidth = ContainerCube.transform.localScale.x;
-	  var cubeHeight = ContainerCube.transform.localScale.y;
-	  var topLeft = new Vector2(center.x - cubeWidth, center.y - cubeWidth);
+    var topLeft = new Vector2(center.x - cubeWidth / 2, center.y + cubeWidth / 2);
     for (var i = 0; i < _maze.Segments.Count; i++)
     {
-      var curentSegmentTopLeft = new Vector2(topLeft.x + mazeSegmentOffset*(i%2), topLeft.y + mazeSegmentOffset*(i/2));
-      DrawMazeSegment(_maze.Segments[i], curentSegmentTopLeft);
+      var offsetToMoveRight = mazeSegmentOffset * (i % 2);
+      var offsetToMoveDown = mazeSegmentOffset * (i / 2);
+
+      var segment = DrawMazeSegment(_maze.Segments[i]);
+      segment.transform.localPosition = new Vector3(topLeft.x + segmentWidth + offsetToMoveRight, topLeft.y - segmentWidth - offsetToMoveDown, -1);
+      segment.transform.SetParent(ContainerCube.transform);
     }
 	}
 
-  private void DrawMazeSegment(MazeSegment segment, Vector2 to)
+  private GameObject DrawMazeSegment(MazeSegment segment)
   {
+    var segmentObject = new GameObject();
     var segmentSideLength = Math.Sqrt(segment.Matrix.GetLength(0));//5
 
     for (int columnNumber = 0; columnNumber < segmentSideLength * 2 - 1; columnNumber++)
@@ -53,10 +58,24 @@ public class GameFieldDraw : MonoBehaviour
           cellScript.CellInfo = segment.GetCellByCoord(new Point(cellX, cellY));
           var x = cellX*CellSize + cellX*WallWidth;
           var y = cellY*CellSize + cellY*WallWidth;
+          newCellObject.transform.localScale = new Vector3(CellSize,CellSize);
+          segmentObject.transform.localPosition = new Vector3(x,-y);
+          newCellObject.transform.SetParent(segmentObject.transform);
         }
+
+        if (isWallColumn)
+        {
+          var newWallObject = Instantiate(Resources.Load("Prefabs\\wallTest")) as GameObject;
+          var x = (cellX + 1) * CellSize + (cellX) * WallWidth;
+          var y = cellY * CellSize + (cellY * WallWidth);
+          segmentObject.transform.localPosition = new Vector3(x, - y);
+          newWallObject.transform.localScale = new Vector3(WallWidth, CellSize);
+          newWallObject.transform.SetParent(segmentObject.transform);
+        }
+
       }
     }
-
+    return segmentObject;
   }
 
   // Update is called once per frame

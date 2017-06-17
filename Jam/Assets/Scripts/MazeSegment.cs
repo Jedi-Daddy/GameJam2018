@@ -24,15 +24,16 @@ public class MazeSegment
   public MazeSegment(string templateLocation)
   {
     var fileReader = new StreamReader(File.OpenRead(templateLocation));
-    string line = null;
+    string textLine = null;
     int lineNumber = 0;
     Cells = new List<CellInfo>();
     _cellsById = new Dictionary<int, CellInfo>();
     _cellsByCoords = new Dictionary<Point, CellInfo>();
-    while ((line = fileReader.ReadLine()) != null)
+    while ((textLine = fileReader.ReadLine()) != null)
     {
+      var line = textLine.Split(',');
       if(Matrix == null)
-        Matrix = new int[line.Length,line.Length];//25x25
+        Matrix = new int[line.Length, line.Length];//25x25
       for (var i = 0; i < line.Length; i++)
       {
         Matrix[i, lineNumber] = Convert.ToInt32(line[i]);
