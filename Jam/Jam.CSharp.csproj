@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -79,15 +81,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CellInfoViewModel.cs" />
+    <Compile Include="Assets\Model\GameState.cs" />
+    <Compile Include="Assets\Model\Maze\Maze.cs" />
+    <Compile Include="Assets\Model\Maze\MazeBuilder.cs" />
+    <Compile Include="Assets\Model\Maze\MazeSegment.cs" />
+    <Compile Include="Assets\Model\PlayerEffect.cs" />
     <Compile Include="Assets\Scripts\CameraToRectSizeSetter.cs" />
     <Compile Include="Assets\Scripts\CellInfo.cs" />
     <Compile Include="Assets\Scripts\GameFieldDraw.cs" />
-    <Compile Include="Assets\Scripts\GameState.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\LocationInMaze.cs" />
-    <Compile Include="Assets\Scripts\Maze.cs" />
-    <Compile Include="Assets\Scripts\MazeBuilder.cs" />
-    <Compile Include="Assets\Scripts\MazeSegment.cs" />
+    <Compile Include="Assets\Model\Maze\MazeSegmentEffect.cs" />
+    <Compile Include="Assets\Model\Maze\MazeActionType.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
+    <Compile Include="Assets\Scripts\StartTurnResult.cs" />
     <Compile Include="Assets\Scripts\_script.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2012\UnityVS.CSharp.targets" />

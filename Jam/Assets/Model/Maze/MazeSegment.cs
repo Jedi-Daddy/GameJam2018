@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
+using Assets.Scripts;
 
 public class MazeSegment
 {
   public int[,] Matrix;
+  public List<MazeSegmentEffect> SegmentEffects;
 
   public List<CellInfo> Cells; 
   private Dictionary<int, CellInfo> _cellsById;
@@ -44,7 +44,7 @@ public class MazeSegment
     var mazeSideLength = (int)Math.Sqrt(lineNumber);//5
     for (var i = 0; i < lineNumber; i++)
     {
-      var cellToAdd = new CellInfo
+      var cellToAdd = new CellInfo()
       {
         Id = i,
         Coords = new Point
@@ -75,4 +75,8 @@ public class MazeSegment
   {
     return _cellsById[id];
   }
+}
+
+public class SegmentEffect
+{
 }

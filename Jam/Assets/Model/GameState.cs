@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Assets.Scripts;
 
-namespace Assets.Scripts
+namespace Assets.Model
 {
   public class GameState
   {
     public int Turn;
-    public Maze Maze;
+    public Maze.Maze Maze;
     public List<Player> Players;
     public List<Hero> Heroes;
 
@@ -16,12 +14,14 @@ namespace Assets.Scripts
     {
       get { return Players[Turn%Players.Count]; }
     }
+
+    public bool TurnForMazeAction { get { return Turn%Players.Count == 0; } }
   }
 
   public class MazeObject
   {
     public int? OwnerId;
-    public LocationInMaze LocationInMaze;
+    public LocationInMaze CurrentPositionInMaze;
   }
 
   public class Hero : MazeObject

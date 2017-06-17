@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Assets.Scripts;
 
-namespace Assets.Scripts
+namespace Assets.Model.Maze
 {
+  public class MazePassibleResult
+  {
+    public List<LocationInMaze> PassibleCells;
+    public List<LocationInMaze> ImpassibleCells;
+  }
+
   public class Maze
   {
     public List<MazeSegment> Segments;
+    public List<MazeObject> MazeObjects;
 
     public Maze(int playersCount)
     {
       Segments = new List<MazeSegment>(playersCount);
+      MazeObjects = new List<MazeObject>();
     }
 
-    public class MazePassibleResult
-    {
-      public List<LocationInMaze> PassibleCells;
-      public List<LocationInMaze> ImpassibleCells;
-    }
-
-    public MazePassibleResult GetPassableCells(LocationInMaze from)
+    public MazePassibleResult GetPassableCells(LocationInMaze from, int gameTurn)
     {
       var result = new MazePassibleResult
       {
@@ -142,6 +144,16 @@ namespace Assets.Scripts
         }
       }
       return true;
+    }
+
+    public MazeActionType GetAction()
+    {
+      return MazeActionType.Nothing;
+    }
+
+    public List<MazeObject> GetObjects(LocationInMaze currentPositionInMaze)
+    {
+      return MazeObjects.Where(mo => currentPositionInMaze.CoordsInSegment.Equals(currentPositionInMaze)).ToList();
     }
   }
 }
