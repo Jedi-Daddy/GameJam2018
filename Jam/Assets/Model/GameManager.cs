@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Assets.Model;
+using Assets.Scripts;
 
-
-namespace Assets.Scripts
+namespace Assets.Model
 {
   public class GameManager
   {

@@ -1,3 +1,5 @@
+using Assets.Model;
+
 namespace Assets.Scripts
 {
   public class MazeSegmentEffect

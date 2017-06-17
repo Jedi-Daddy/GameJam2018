@@ -81,21 +81,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CellInfoViewModel.cs" />
+    <Compile Include="Assets\Model\GameManager.cs" />
     <Compile Include="Assets\Model\GameState.cs" />
     <Compile Include="Assets\Model\Maze\Maze.cs" />
+    <Compile Include="Assets\Model\Maze\MazeActionType.cs" />
     <Compile Include="Assets\Model\Maze\MazeBuilder.cs" />
     <Compile Include="Assets\Model\Maze\MazeSegment.cs" />
+    <Compile Include="Assets\Model\Maze\MazeSegmentEffect.cs" />
     <Compile Include="Assets\Model\PlayerEffect.cs" />
+    <Compile Include="Assets\Model\Races\ElvesSpecificInfo.cs" />
+    <Compile Include="Assets\Model\Races\RaceManager.cs" />
+    <Compile Include="Assets\Model\Races\RaceSpecificInfo.cs" />
     <Compile Include="Assets\Scripts\CameraToRectSizeSetter.cs" />
     <Compile Include="Assets\Scripts\CellInfo.cs" />
     <Compile Include="Assets\Scripts\GameFieldDraw.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\LocationInMaze.cs" />
-    <Compile Include="Assets\Model\Maze\MazeSegmentEffect.cs" />
-    <Compile Include="Assets\Model\Maze\MazeActionType.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\StartTurnResult.cs" />
-    <Compile Include="Assets\Scripts\_script.cs" />
+    <Compile Include="Assets\Scripts\ViewModel\GameUIView.cs" />
+    <Compile Include="Assets\Scripts\ViewModel\HeroInfoView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2012\UnityVS.CSharp.targets" />
 </Project>

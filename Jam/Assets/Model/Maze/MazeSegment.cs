@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Model;
 using Assets.Scripts;
 
 public class MazeSegment
 {
   public int[,] Matrix;
+  public Race RaceType;
   public List<MazeSegmentEffect> SegmentEffects;
 
   public List<CellInfo> Cells; 

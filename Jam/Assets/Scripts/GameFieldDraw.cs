@@ -53,13 +53,13 @@ public class GameFieldDraw : MonoBehaviour
         var isWallRow = rowNumber%2 == 1;
         if (isWallColumn && isWallRow)
         {
-          //var newCellObject = Instantiate(Resources.Load("Prefabs\\wallTest")) as GameObject;
-          //var x = cellX * CellSize - segmentWidth / 2;
-          //var y = (cellY + 1) * CellSize - segmentWidth / 2;
-          //newCellObject.transform.localPosition = new Vector3(x, -y);
+          var newCellObject = Instantiate(Resources.Load("Prefabs\\MapElements\\Wall")) as GameObject;
+          var x = (cellX+1) * CellSize + cellX * WallWidth - segmentWidth / 2 + WallWidth/2;
+          var y = (cellY + 1) * CellSize + cellY * WallWidth - segmentWidth / 2 + WallWidth / 2;
+          newCellObject.transform.localPosition = new Vector3(x, -y);
           //var rect = newCellObject.AddComponent<RectTransform>();
           //rect.sizeDelta = new Vector3(WallWidth, CellSize);
-          //newCellObject.transform.SetParent(segmentObject.transform);
+          newCellObject.transform.SetParent(segmentObject.transform);
           //маленький квадратик
           continue;
         }
@@ -67,7 +67,7 @@ public class GameFieldDraw : MonoBehaviour
         //Cell
         if (!isWallColumn && !isWallRow)
         {
-          var newCellObject = Instantiate(Resources.Load("Prefabs\\cellTest")) as GameObject;
+          var newCellObject = Instantiate(Resources.Load("Prefabs\\MapElements\\Tile_Elf")) as GameObject;
           newCellObject.transform.SetParent(segmentObject.transform);
           var cellScript = newCellObject.GetComponent<CellInfoViewModel>();
           cellScript.CellInfo = segment.GetCellByCoord(new Point(cellX, cellY));
@@ -81,13 +81,14 @@ public class GameFieldDraw : MonoBehaviour
         {
           var x = (cellX + 1) * CellSize  + (cellX) * WallWidth + WallWidth / 2 - segmentWidth / 2;
           var y = cellY * CellSize + (cellY * WallWidth) - segmentWidth / 2 + CellSize / 2;
+          
           var template = segment.CanPass(new Point(cellX, cellY), new Point(cellX +1, cellY))
-            ? Resources.Load("Prefabs\\passibleWall")
-            : Resources.Load("Prefabs\\wallTest");
+            ? Resources.Load("Prefabs\\MapElements\\Tile_Elf_slim_v")
+            : Resources.Load("Prefabs\\MapElements\\Wall_long");
           var newWallObject = Instantiate(template) as GameObject;
           newWallObject.transform.SetParent(segmentObject.transform);
-          var rect = newWallObject.GetComponent<RectTransform>();
-          rect.sizeDelta = new Vector3(WallWidth, CellSize);
+          //var rect = newWallObject.GetComponent<RectTransform>();
+          //rect.sizeDelta = new Vector3(WallWidth, CellSize);
           newWallObject.transform.localPosition = new Vector3(x, -y);
         }
 
@@ -97,12 +98,13 @@ public class GameFieldDraw : MonoBehaviour
           var y = (cellY + 1) * CellSize + cellY * WallWidth - segmentWidth / 2 + WallWidth/2;
           
           var template = segment.CanPass(new Point(cellX, cellY), new Point(cellX, cellY+1))
-            ? Resources.Load("Prefabs\\passibleWall")
-            : Resources.Load("Prefabs\\wallTest");
+            ? Resources.Load("Prefabs\\MapElements\\Tile_Elf_slim_v")
+            : Resources.Load("Prefabs\\MapElements\\Wall_long");
           var newWallObject = Instantiate(template) as GameObject;
           newWallObject.transform.SetParent(segmentObject.transform);
-          var rect = newWallObject.GetComponent<RectTransform>();
-          rect.sizeDelta = new Vector3(CellSize, WallWidth);
+          newWallObject.transform.eulerAngles = new Vector3(0,0,90f);
+          //var rect = newWallObject.GetComponent<RectTransform>();
+          //rect.sizeDelta = new Vector3(CellSize, WallWidth);
           newWallObject.transform.localPosition = new Vector3(x, -y);
         }
       }
