@@ -64,4 +64,14 @@ public class MazeSegment
     var cellTo = _cellsByCoords[to];
     return Matrix[cellFrom.Id, cellTo.Id] == 1;
   }
+
+  public CellInfo GetCellByCoord(Point coords)
+  {
+    return _cellsByCoords[coords];
+  }
+
+  public CellInfo GetCellById(int id)
+  {
+    return _cellsById[id];
+  }
 }

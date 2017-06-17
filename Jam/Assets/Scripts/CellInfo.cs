@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class CellInfo
 {
   public int Id;

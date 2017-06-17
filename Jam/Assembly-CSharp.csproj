@@ -35,7 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -48,12 +47,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CellInfoViewModel.cs" />
     <Compile Include="Assets\Scripts\CellInfo.cs" />
+    <Compile Include="Assets\Scripts\GameFieldDraw.cs" />
+    <Compile Include="Assets\Scripts\GameState.cs" />
     <Compile Include="Assets\Scripts\LocationInMaze.cs" />
     <Compile Include="Assets\Scripts\Maze.cs" />
     <Compile Include="Assets\Scripts\MazeBuilder.cs" />
     <Compile Include="Assets\Scripts\MazeSegment.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
+    <Compile Include="Assets\Scripts\ViewModel\GameUIManager.cs" />
     <Compile Include="Assets\Scripts\_script.cs" />
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Program Files/Unity5.6.1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
