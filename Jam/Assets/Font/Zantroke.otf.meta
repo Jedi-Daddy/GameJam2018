@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 2158923455049b745afae9d3c0ba2e70
+timeCreated: 1497712294
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Zantroke
+  fontNames:
+  - Zantroke
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
