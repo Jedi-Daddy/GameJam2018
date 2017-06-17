@@ -29,6 +29,7 @@ public class GameFieldDraw : MonoBehaviour
       var offsetToMoveDown = mazeSegmentOffset * (i / 2);
 
       var segment = DrawMazeSegment(_maze.Segments[i], segmentWidth);
+      segment.AddComponent<SegmentInfo>().Id = i;
       segment.transform.SetParent(ContainerCube.transform);
       segment.transform.localScale = Vector3.one;
       var segmentRect = segment.AddComponent<RectTransform>();
@@ -40,7 +41,8 @@ public class GameFieldDraw : MonoBehaviour
   //не трогать
   private GameObject DrawMazeSegment(MazeSegment segment, int segmentWidth)
   {
-    var segmentObject = new GameObject();//Instantiate(Resources.Load("Prefabs\\wallTest")) as GameObject;
+    var segmentObject = new GameObject();
+
     var segmentSideLength = Math.Sqrt(segment.Matrix.GetLength(0));//5
 
     for (int columnNumber = 0; columnNumber < segmentSideLength * 2 - 1; columnNumber++)

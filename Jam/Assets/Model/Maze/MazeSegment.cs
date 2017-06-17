@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Assets.Model;
+using Assets.Model.Maze;
 using Assets.Scripts;
 
 public class MazeSegment

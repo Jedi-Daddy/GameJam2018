@@ -6,11 +6,17 @@ namespace Assets.Model
 {
   public class GameManager
   {
+    public static readonly GameManager Instance = new GameManager();
+
+    private GameManager()
+    {
+    }
+
     public GameState GameState;
     public const int PlayersCount = 4;
     public const int ActionCountDefault = 3;
 
-    private List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
+    private static List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
 
     };
@@ -71,52 +77,6 @@ namespace Assets.Model
       if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
         return HeroMoveResult.StandsOnChest;
       return HeroMoveResult.Default;
-    }
-  }
-
-
-  public class PlayerAction
-  {
-    public int PlayerId;
-    public PlayerEffect Effect;
-  }
-
-  public class SegmentAction
-  {
-    public int SegmentId;
-    public MazeSegmentEffect SegmentEffect;
-  }
-
-  public enum MazeSegmentEffectType
-  {
-
-  }
-
-  internal interface IMazeActionApplier
-  {
-    void ApplyAction(GameState state, MazeActionType actionType, MazeActionResult result);
-  }
-
-  public class MazeActionResult
-  {
-    public List<SegmentAction> SegmentActions;
-    public List<PlayerAction> PlayerActions;
-
-    public bool IsEmpty
-    {
-      get
-      {
-        return (SegmentActions == null || !SegmentActions.Any()) && (PlayerActions == null || !PlayerActions.Any());
-      }
-    }
-  }
-
-  public static class GameStateBuilder
-  {
-    public static GameState BuildNewGameState(int playersCount)
-    {
-      var gameState = new GameState();
-      return gameState;
     }
   }
 }
