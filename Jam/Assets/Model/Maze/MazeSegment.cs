@@ -8,7 +8,7 @@ namespace Assets.Model.Maze
   public class MazeSegment
   {
     public int[,] Matrix;
-    public Race RaceType;
+    public Race RaceType = Race.Elves;
     public List<MazeSegmentEffect> SegmentEffects;
 
     public List<CellInfo> Cells; 

@@ -4,12 +4,13 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.ViewModel
 {
-  public class GameUIView : MonoBehaviour
+  public class GameViewManager : MonoBehaviour
   {
     private GameState _currentState;
     private int _curentPlayerId;
     private int _maxHp;
 
+    public RectTransform FieldContainer;
     public HeroInfoView[] HeroesInfo;
     public Slider HpProgressBarSlider;
     public Text TimerText;
@@ -22,10 +23,14 @@ namespace Assets.Scripts.ViewModel
 
       SetHpValue(_currentState.Heroes[_curentPlayerId].HitPoints);
       SetEnergyPointsCount(_currentState.CurrentPlayer.ActionPoints);
+      GameFieldDrawer.DrawField(FieldContainer, state.Maze);
     }
     
     public void SetHpValue(int currentHP)
     {
+      if (HpProgressBarSlider == null)
+        return;
+
       var value = (float) currentHP/_maxHp;
 
       HpProgressBarSlider.value = value;
@@ -33,11 +38,17 @@ namespace Assets.Scripts.ViewModel
 
     public void SetTimerValue(string timerValue)
     {
+      if (TimerText == null)
+        return;
+
       TimerText.text = timerValue;
     }
 
     public void SetEnergyPointsCount(int points)
     {
+      if (EnergyPointsText == null)
+        return;
+
       EnergyPointsText.text = points.ToString();
     }
   }

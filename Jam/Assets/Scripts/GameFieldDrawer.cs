@@ -13,7 +13,7 @@ namespace Assets.Scripts
     //private Maze _maze;
 
     // Use this for initialization
-    void DrawField (RectTransform container, Maze maze)
+    public static void DrawField (RectTransform container, Maze maze)
     {
       const int segmentWidth = CellSize*5 + WallWidth*4;
       var mazeSegmentOffset = segmentWidth + 30;
@@ -37,7 +37,7 @@ namespace Assets.Scripts
     }
 
     //не трогать
-    private GameObject DrawMazeSegment(MazeSegment segment, int segmentWidth)
+    private static GameObject DrawMazeSegment(MazeSegment segment, int segmentWidth)
     {
       var segmentObject = new GameObject();
 
