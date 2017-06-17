@@ -8,7 +8,7 @@ namespace Assets.Scripts
 {
   public static class MazeBuilder
   {
-    public const string TemplatesLocation = @"D:\GameJamRepo\Jam\MazeTemplates";
+    public const string TemplatesLocation = @"MazeTemplates";
     private static List<MazeSegment> _segmentTemplates;
     private static Random _random;
 

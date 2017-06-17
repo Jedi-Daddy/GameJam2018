@@ -5,4 +5,9 @@ using UnityEngine;
 public class CellInfoViewModel : MonoBehaviour
 {
   public CellInfo CellInfo;
+
+  public void OnClick()
+  {
+    
+  }
 }
