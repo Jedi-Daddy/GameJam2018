@@ -40,7 +40,7 @@ namespace Assets.Model.Maze
             SegmentId = segmentId,
             CoordsInSegment = cellInfo.Coords
           };
-          if(CanPass(from, location))
+          if (CanPass(from, location, gameTurn))
             result.PassibleCells.Add(location);
           else
           {
@@ -51,13 +51,17 @@ namespace Assets.Model.Maze
       return result;
     }
 
-    public bool CanPass(LocationInMaze from, LocationInMaze to)
+    public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
     {
       if(from.Equals(to))
         return false;
 
       if (from.SegmentId == to.SegmentId)
         return Segments[from.SegmentId].CanPass(from.CoordsInSegment, to.CoordsInSegment);
+
+      if (Segments[from.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn)
+        || Segments[to.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn))
+        return false;
 
       if(from.CoordsInSegment.X != to.CoordsInSegment.X && from.CoordsInSegment.Y != to.CoordsInSegment.Y)
         return false;

@@ -23,7 +23,7 @@ namespace Assets.Scripts
       }
     }
 
-    public static Maze BuildMaze(int playersCount)
+    public static Maze BuildNew(int playersCount)
     {
       var result = new Maze(playersCount) { Segments = new List<MazeSegment>(playersCount) };
       for (int i = 0; i < playersCount; i++)

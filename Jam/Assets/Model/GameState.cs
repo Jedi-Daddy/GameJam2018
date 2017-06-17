@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts;
 
 namespace Assets.Model
@@ -9,13 +10,14 @@ namespace Assets.Model
     public Maze.Maze Maze;
     public List<Player> Players;
     public List<Hero> Heroes;
+    public List<Chest> Chests;
 
     public Player CurrentPlayer
     {
       get { return Players[Turn%Players.Count]; }
     }
 
-    public bool TurnForMazeAction { get { return Turn%Players.Count == 0; } }
+    public bool TurnForMazeAction { get { return Turn % Players.Count(p => !p.IsDead) == 0; } }
   }
 
   public class MazeObject

@@ -21,18 +21,18 @@ namespace Assets.Model
 
     };
 
-    public StartTurnResult StartNewGame()
+    public GameState StartNewGame()
     {
       GameState = GameStateBuilder.BuildNewGameState(PlayersCount);
       return StartNewTurn();
     }
 
-    public StartTurnResult StartNewTurn()
+    public GameState StartNewTurn()
     {
       ++GameState.Turn;
       StartTurnResult startTurnResult = null;
       if (GameState.CurrentPlayer.IsDead)
-        startTurnResult = StartNewTurn();
+        ++GameState.Turn;
       startTurnResult = (startTurnResult ?? new StartTurnResult());
       GameState.CurrentPlayer.ActionPoints = ActionCountDefault;
 

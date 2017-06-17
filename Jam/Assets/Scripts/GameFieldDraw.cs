@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Model.Maze;
+using Assets.Model.Races;
 using Assets.Scripts;
 using UnityEngine;
 
@@ -69,7 +70,7 @@ public class GameFieldDraw : MonoBehaviour
         //Cell
         if (!isWallColumn && !isWallRow)
         {
-          var newCellObject = Instantiate(Resources.Load("Prefabs\\MapElements\\Tile_Elf")) as GameObject;
+          var newCellObject = Instantiate(Resources.Load(RaceManager.GetCellPrefabLocation(segment.RaceType))) as GameObject;
           newCellObject.transform.SetParent(segmentObject.transform);
           var cellScript = newCellObject.GetComponent<CellInfoViewModel>();
           cellScript.CellInfo = segment.GetCellByCoord(new Point(cellX, cellY));
@@ -85,7 +86,7 @@ public class GameFieldDraw : MonoBehaviour
           var y = cellY * CellSize + (cellY * WallWidth) - segmentWidth / 2 + CellSize / 2;
           
           var template = segment.CanPass(new Point(cellX, cellY), new Point(cellX +1, cellY))
-            ? Resources.Load("Prefabs\\MapElements\\Tile_Elf_slim_v")
+            ? Resources.Load(RaceManager.GetWallPrefabLocation(segment.RaceType))
             : Resources.Load("Prefabs\\MapElements\\Wall_long");
           var newWallObject = Instantiate(template) as GameObject;
           newWallObject.transform.SetParent(segmentObject.transform);

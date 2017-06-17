@@ -2,7 +2,7 @@ namespace Assets.Model.Maze
 {
   public class MazeSegmentEffect
   {
-    public int TurnsDuration;
+    public int TurnUntil;
     public MazeSegmentEffectType EffectType;
   }
 }

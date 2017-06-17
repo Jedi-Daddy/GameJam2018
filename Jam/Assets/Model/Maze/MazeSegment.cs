@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.Model;
 using Assets.Model.Maze;
 using Assets.Scripts;
@@ -12,11 +13,11 @@ public class MazeSegment
   public List<MazeSegmentEffect> SegmentEffects;
 
   public List<CellInfo> Cells; 
-  private Dictionary<int, CellInfo> _cellsById;
+  private readonly Dictionary<int, CellInfo> _cellsById;
   private readonly Dictionary<Point, CellInfo> _cellsByCoords;
 
-  public readonly Point HeroLocation = new Point(2,2);
-  public readonly List<Point> ChestsPossibleLocations = new List<Point>
+  public static readonly Point HeroLocation = new Point(2,2);
+  public static readonly List<Point> ChestsPossibleLocations = new List<Point>
   {
     new Point(1, 1),
     new Point(1, 3),
@@ -27,6 +28,7 @@ public class MazeSegment
   public MazeSegment(string templateLocation)
   {
     var fileReader = new StreamReader(File.OpenRead(templateLocation));
+    SegmentEffects = new List<MazeSegmentEffect>();
     string textLine = null;
     int lineNumber = 0;
     Cells = new List<CellInfo>();
@@ -77,6 +79,11 @@ public class MazeSegment
   public CellInfo GetCellById(int id)
   {
     return _cellsById[id];
+  }
+
+  public bool HasEffect(MazeSegmentEffectType type, int currentGameTurn)
+  {
+    return SegmentEffects.Any(se => se.EffectType == type && se.TurnUntil >= currentGameTurn);
   }
 }
 
