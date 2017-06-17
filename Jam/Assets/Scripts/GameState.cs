@@ -7,9 +7,15 @@ namespace Assets.Scripts
 {
   internal class GameState
   {
+    public int Turn;
     public Maze Maze;
-    public List<Player> Player;
-    public List<Hero> 
+    public List<Player> Players;
+    public List<Hero> Heroes;
+
+    public Player CurrentPlayer
+    {
+      get { return Players[Turn%Players.Count]; }
+    }
   }
 
   public class MazeObject
