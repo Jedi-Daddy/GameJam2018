@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Maze;
+using Assets.Model.Maze.MazeObjects;
+using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Scripts;
 
 namespace Assets.Model
@@ -89,25 +92,5 @@ namespace Assets.Model
         return result;
       }
     }
-  }
-
-  internal class WeaponChest : Chest
-  {
-    public Weapon Weapon;
-  }
-
-  internal class Weapon
-  {
-    public int Damage;
-  }
-
-  internal class AnhChest : Chest
-  {
-    public Anh Anh;
-  }
-
-  internal class Anh
-  {
-    public int HealingPower;
   }
 }

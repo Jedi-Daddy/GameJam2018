@@ -1,5 +1,6 @@
 ﻿using Assets.Model;
 using Assets.Model.Maze;
+using Assets.Model.Maze.MazeObjects;
 
 namespace Assets.Scripts
 {

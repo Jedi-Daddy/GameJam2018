@@ -12,24 +12,23 @@ public class GameFieldDraw : MonoBehaviour
   public RectTransform ContainerCube;
   private const int CellSize = 60;
   private const int WallWidth = 30;
-  private Maze _maze;
+  //private Maze _maze;
 
 	// Use this for initialization
-	void Start ()
+	void Start (Maze maze)
 	{
-    _maze = MazeBuilder.BuildMaze(4);
-	  const int segmentWidth = CellSize*5 + WallWidth*4;
+    const int segmentWidth = CellSize*5 + WallWidth*4;
     var mazeSegmentOffset = segmentWidth + 30;
     var center = ContainerCube.transform.localPosition;
 	  var cubeWidth = ContainerCube.rect.width;
     var topLeft = new Vector2(center.x - cubeWidth / 2, center.y + cubeWidth / 2);
 
-    for (var i = 0; i < _maze.Segments.Count; i++)
+    for (var i = 0; i < maze.Segments.Count; i++)
     {
       var offsetToMoveRight = mazeSegmentOffset * (i % 2);
       var offsetToMoveDown = mazeSegmentOffset * (i / 2);
 
-      var segment = DrawMazeSegment(_maze.Segments[i], segmentWidth);
+      var segment = DrawMazeSegment(maze.Segments[i], segmentWidth);
       segment.AddComponent<SegmentInfo>().Id = i;
       segment.transform.SetParent(ContainerCube.transform);
       segment.transform.localScale = Vector3.one;

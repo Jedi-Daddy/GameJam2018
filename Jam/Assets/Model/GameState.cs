@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts;
+using Assets.Model.Maze.MazeObjects;
+using Assets.Model.Maze.MazeObjects.Chest;
 
 namespace Assets.Model
 {
@@ -18,36 +19,6 @@ namespace Assets.Model
     }
 
     public bool TurnForMazeAction { get { return Turn % Players.Count(p => !p.IsDead) == 0; } }
-  }
-
-  public class MazeObject
-  {
-    public int? OwnerId;
-    public LocationInMaze CurrentPositionInMaze;
-  }
-
-  public class Hero : MazeObject
-  {
-    public Race Race;
-    public int HitPoints;
-  }
-
-  public abstract class Chest : MazeObject
-  {
-    
-  }
-
-  public class RubyChest : Chest
-  {
-    public int RubyAmount;
-  }
-
-  public enum Race
-  {
-    Elves = 1,
-    Ent = 2,
-    Orc = 3,
-    Vampire = 4
   }
 
   public class Player

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Maze;
+using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Scripts;
 
 namespace Assets.Model
@@ -16,7 +18,7 @@ namespace Assets.Model
     public const int PlayersCount = 4;
     public const int ActionCountDefault = 3;
 
-    private static List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
+    private static readonly List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
 
     };
@@ -49,7 +51,7 @@ namespace Assets.Model
       startTurnResult.PlayerHero = playerHero;
       startTurnResult.WhereHeroCanMove = GameState.Maze.GetPassableCells(playerHero.CurrentPositionInMaze, GameState.Turn);
 
-      return startTurnResult;
+      return GameState;
     }
 
     private MazeActionResult ApplyMazeAction(MazeActionType action, GameState gameState)

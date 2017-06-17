@@ -1,3 +1,4 @@
+using Assets.Model.Maze;
 using Assets.Scripts;
 
 namespace Assets.Model
