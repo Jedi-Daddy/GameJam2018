@@ -9,8 +9,8 @@ namespace Assets.Scripts.ViewModel
 
     private void Start()
     {
-      var state = GameManager.Instance.StartNewGame();
-      GameUI.SetState(state);
+      var startTurnRes = GameManager.Instance.StartNewGame();
+      GameUI.SetState(startTurnRes.CurentState);
     }
   }
 }
