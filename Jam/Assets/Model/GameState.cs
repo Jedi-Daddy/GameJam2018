@@ -27,6 +27,23 @@ namespace Assets.Model
     public bool IsDead;
     public int ActionPoints;
     public List<Card> Cards;
+    public ItemSlot Slot;
+  }
+
+  public class ItemSlot
+  {
+    public Weapon Weapon;
+    public Anh Anh;
+
+    public ItemSlot(Weapon weapon)
+    {
+      Weapon = weapon;
+    }
+
+    public ItemSlot(Anh anh)
+    {
+      Anh = anh;
+    }
   }
 
   public class Card

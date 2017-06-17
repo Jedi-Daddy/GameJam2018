@@ -23,13 +23,16 @@ namespace Assets.Model
 
     };
 
-    public GameState StartNewGame()
+    public StartTurnResult StartNewGame()
     {
       GameState = GameStateBuilder.BuildNewGameState(PlayersCount);
-      return StartNewTurn();
+      var state = StartNewTurn();
+      state.CurentState = GameState;
+
+      return state;
     }
 
-    public GameState StartNewTurn()
+    public StartTurnResult StartNewTurn()
     {
       ++GameState.Turn;
       StartTurnResult startTurnResult = null;
@@ -42,7 +45,7 @@ namespace Assets.Model
       if (GameState.TurnForMazeAction)
       {
         var action = GameState.Maze.GetAction();
-        mazeActionResult = ApplyMazeAction(action, GameState);
+        mazeActionResult = ApplyMazeAction(action);
       }
 
       startTurnResult.MazeActionResult = mazeActionResult;
@@ -51,10 +54,10 @@ namespace Assets.Model
       startTurnResult.PlayerHero = playerHero;
       startTurnResult.WhereHeroCanMove = GameState.Maze.GetPassableCells(playerHero.CurrentPositionInMaze, GameState.Turn);
 
-      return GameState;
+      return startTurnResult;
     }
 
-    private MazeActionResult ApplyMazeAction(MazeActionType action, GameState gameState)
+    private MazeActionResult ApplyMazeAction(MazeActionType action)
     {
       var result = new MazeActionResult();
       foreach (var actionApplier in ActionAppliers)
@@ -80,6 +83,28 @@ namespace Assets.Model
         return HeroMoveResult.StandsOnChest;
       return HeroMoveResult.Default;
     }
+
+    public ChestOpeningResult OpenChest()
+    {
+      var curentPlayer = GameState.CurrentPlayer;
+      var hero = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
+      var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
+      return chest.OpenChest();
+    }
+  }
+  public class ChestOpeningResult
+  {
+    public ChestOpeningResultType ChestOpeningResultType;
+    public int Rubys;
+    public Weapon Weapon;
+    public Anh Anh;
+  }
+  public enum ChestOpeningResultType
+  {
+    Ruby = 0,
+    Weapon = 1,
+    Anh = 2,
+    Banana = 3
   }
 }
 

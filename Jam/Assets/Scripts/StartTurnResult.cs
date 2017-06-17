@@ -10,5 +10,7 @@ namespace Assets.Scripts
     public Hero PlayerHero;
     public MazePassibleResult WhereHeroCanMove;
     public MazeActionResult MazeActionResult;
+
+    public GameState CurentState;
   }
 }

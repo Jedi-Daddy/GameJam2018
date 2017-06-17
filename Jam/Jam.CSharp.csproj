@@ -81,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CellInfoViewModel.cs" />
-    <Compile Include="Assets\Model\Maze\MazeObjects\Chest\Anh.cs" />
+    <Compile Include="Assets\Model\Anh.cs" />
     <Compile Include="Assets\Model\Maze\MazeObjects\Chest\AnhChest.cs" />
     <Compile Include="Assets\Model\Maze\MazeObjects\Chest\Chest.cs" />
     <Compile Include="Assets\Model\GameManager.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="Assets\Scripts\CameraToRectSizeSetter.cs" />
     <Compile Include="Assets\Model\Maze\CellInfo.cs" />
     <Compile Include="Assets\Scripts\GameFieldDrawer.cs" />
-    <Compile Include="Assets\Scripts\LocationInMaze.cs" />
+    <Compile Include="Assets\Model\Maze\LocationInMaze.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\SegmentInfo.cs" />
     <Compile Include="Assets\Scripts\StartTurnResult.cs" />
