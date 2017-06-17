@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Scripts
+namespace Assets.Model.Maze
 {
   public class LocationInMaze : IEquatable<LocationInMaze>
   {

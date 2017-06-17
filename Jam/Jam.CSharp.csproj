@@ -108,7 +108,7 @@
     <Compile Include="Assets\Model\WeaponChest.cs" />
     <Compile Include="Assets\Scripts\CameraToRectSizeSetter.cs" />
     <Compile Include="Assets\Model\Maze\CellInfo.cs" />
-    <Compile Include="Assets\Scripts\GameFieldDraw.cs" />
+    <Compile Include="Assets\Scripts\GameFieldDrawer.cs" />
     <Compile Include="Assets\Scripts\LocationInMaze.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\SegmentInfo.cs" />
