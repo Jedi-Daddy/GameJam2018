@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.Scripts
 {
-  internal class GameState
+  public class GameState
   {
     public int Turn;
     public Maze Maze;
@@ -24,7 +24,7 @@ namespace Assets.Scripts
     public LocationInMaze LocationInMaze;
   }
 
-  internal class Hero : MazeObject
+  public class Hero : MazeObject
   {
     public Race Race;
     public int HitPoints;
@@ -48,7 +48,7 @@ namespace Assets.Scripts
     Vampire = 4
   }
 
-  internal class Player
+  public class Player
   {
     public int Id;
     public bool IsDead;
@@ -56,7 +56,7 @@ namespace Assets.Scripts
     public List<Card> Cards;
   }
 
-  internal class Card
+  public class Card
   {
     //todo
   }
