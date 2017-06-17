@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Model.Maze;
+using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Races;
 using UnityEngine;
 
@@ -42,6 +43,11 @@ namespace Assets.Scripts
       var segmentObject = new GameObject();
 
       var segmentSideLength = Math.Sqrt(segment.Matrix.GetLength(0));//5
+      //for (int i = 0; i < UPPER; i++)
+      //{
+        
+      //}
+
 
       for (int columnNumber = 0; columnNumber < segmentSideLength * 2 - 1; columnNumber++)
       {
@@ -110,6 +116,13 @@ namespace Assets.Scripts
         }
       }
       return segmentObject;
+    }
+
+    public static void DrawHero(RectTransform fieldContainer, Hero hero)
+    {
+      var heroObject = GameObject.Instantiate(Resources.Load("Prefabs\\heroTest")) as GameObject;
+      heroObject.transform.SetParent(fieldContainer.transform);
+      heroObject.transform.localPosition = CoordsUtility.GetUiPosition(hero.CurrentPositionInMaze);
     }
   }
 }

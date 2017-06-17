@@ -24,6 +24,7 @@ namespace Assets.Scripts.ViewModel
       SetHpValue(_currentState.Heroes[_curentPlayerId].HitPoints);
       SetEnergyPointsCount(_currentState.CurrentPlayer.ActionPoints);
       GameFieldDrawer.DrawField(FieldContainer, state.Maze);
+      GameFieldDrawer.DrawHero(FieldContainer, state.CurrentHero);
     }
     
     public void SetHpValue(int currentHP)

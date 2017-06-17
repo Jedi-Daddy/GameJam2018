@@ -18,6 +18,11 @@ namespace Assets.Model
       get { return Players[Turn%Players.Count]; }
     }
 
+    public Hero CurrentHero
+    {
+      get { return Heroes.First(h => h.OwnerId == CurrentPlayer.Id); }
+    }
+
     public bool TurnForMazeAction { get { return Turn % Players.Count(p => !p.IsDead) == 0; } }
   }
 
