@@ -1,4 +1,5 @@
-﻿using Assets.Model;
+﻿using System.Text;
+using Assets.Model;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,11 +15,14 @@ namespace Assets.Scripts.ViewModel
     public HeroInfoView CurrentHeroInfo;
     public HeroInfoView[] HeroesInfo;
     public RectTransform CardHolder;
-
     public Text TimerText;
+    public Text GameLogText;
+
+    private StringBuilder _messageSb;
 
     public void Initialize(GameState state)
     {
+      _messageSb = new StringBuilder();
       GameFieldDrawer.DrawField(FieldContainer, state.Maze);
       var heroes = state.Heroes;
 
@@ -79,8 +83,6 @@ namespace Assets.Scripts.ViewModel
         cell.transform.localPosition = CoordsUtility.GetUiPosition(passibleCell);
       }
 
-      _currentState = state;
-
       CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);
       var heroes = state.Heroes;
       for (int i = 0, j = 0; i < heroes.Count;i++)
@@ -115,6 +117,16 @@ namespace Assets.Scripts.ViewModel
           sepObj.transform.localPosition = Vector3.zero;
         }
       }
+    }
+
+    public void PrintMessage(string message)
+    {
+      if (GameLogText == null || _messageSb == null)
+        return;
+
+      _messageSb.Append("<color=#008000ff> > </color>").AppendLine(message);
+
+      GameLogText.text = _messageSb.ToString();
     }
   }
 }
