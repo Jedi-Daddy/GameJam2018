@@ -48,6 +48,12 @@ namespace Assets.Model
       {
         var action = GameState.Maze.GetAction();
         ApplyMazeAction(action);
+        if(action == MazeActionType.Rebuild)
+          GameState.Message = "One of maze segments were rebuilt";
+        else if (action == MazeActionType.Lock)
+          GameState.Message = "Some of segments are now locked. Hope not yours";
+        else if (action == MazeActionType.Teleport)
+          GameState.Message = "Where are you?";
       }
 
       if (GameState.CurrentPlayer.Cards.Count < CardsCount)
@@ -91,11 +97,20 @@ namespace Assets.Model
         var openChestResult = chest.OpenChest();
         GameState.Chests.Remove(chest);
         if (openChestResult.Rubys > 0)
+        {
           GameState.CurrentPlayer.RubyAmmount += openChestResult.Rubys;
-        if(openChestResult.Weapon != null)
+          GameState.Message = "You got some rubys. OMG WTF";
+        }
+        if (openChestResult.Weapon != null)
+        {
           GameState.CurrentPlayer.Slot = new ItemSlot(openChestResult.Weapon);
+          GameState.Message = "Now you have weapon. KILL THEM ALL! (weapon can be used once lol)";
+        }
         if (openChestResult.Anh != null)
+        {
           GameState.CurrentPlayer.Slot = new ItemSlot(openChestResult.Anh);
+          GameState.Message = "Now you are immortal!!! Well no but something like that";
+        }
       }
 
 
@@ -149,6 +164,7 @@ namespace Assets.Model
       if (curentPlayer.ActiveCard != null)
       {
         AttackHeroWithCard(heroToAttack, curentPlayer.ActiveCard);
+        GameState.Message = string.Format("BOOM!! Here goes some CARD damage {0}. This damage is different because u used card.", curentPlayer.ActiveCard.Power);
       }
       else
       {
@@ -158,6 +174,7 @@ namespace Assets.Model
         var damage = curentPlayer.Slot.Weapon.Damage;
         curentPlayer.Slot = null;
         ApplyDamage(heroToAttack, damage);
+        GameState.Message = string.Format("BOOM!! Here goes some damage {0}", damage);
       }
       OnAction();
       if(GameState.CurrentPlayer.ActionPoints == 0)

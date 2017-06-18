@@ -178,18 +178,66 @@ namespace Assets.Model.Maze
       }
       return true;
     }
+    private static readonly Dictionary<MazeActionType, double> ActionsByProbability = new Dictionary
+     <MazeActionType, double>
+    {
+      {MazeActionType.Lock, 0.33},
+      {MazeActionType.Rebuild, 0.33},
+      {MazeActionType.Teleport, 0.33},
+      //{MazeActionType.Nothing, 0.1},
+    };
 
     public MazeActionType GetAction()
     {
-      return MazeActionType.Rebuild;
-      var rand = new Random();
-      if (rand.NextDouble() < 0.5)
-        return MazeActionType.Lock;
-      else
-      {
-        return MazeActionType.Teleport;
-      }
+      return GetRandomProbability(ActionsByProbability, 1, false)[0];
     }
+
+    public static T[] GetRandomProbability<T>(Dictionary<T, double> probabilityByValue, int count, bool unique)
+    {
+      var rand = new Random();
+      var result = new T[count];
+
+      int remaining = count;
+      int taken = 0;
+
+      var set = !unique ? null : new HashSet<T>();
+
+      while (remaining > 0)
+      {
+        var value = rand.NextDouble();
+        var prev = 0.0;
+        foreach (var prob in probabilityByValue)
+        {
+          if (value >= prev && value < prev + prob.Value)
+          {
+            if (!unique || !set.Contains(prob.Key))
+            {
+              result[taken++] = prob.Key;
+              remaining--;
+
+              if (unique)
+                set.Add(prob.Key);
+
+              break;
+            }
+          }
+          prev += prob.Value;
+        }
+      }
+
+      return result;
+    }
+    //public MazeActionType GetAction()
+    //{
+    //  return MazeActionType.Rebuild;
+    //  var rand = new Random();
+    //  if (rand.NextDouble() < 0.5)
+    //    return MazeActionType.Lock;
+    //  else
+    //  {
+    //    return MazeActionType.Teleport;
+    //  }
+    //}
 
     public List<MazeObject> GetObjects(LocationInMaze currentPositionInMaze)
     {

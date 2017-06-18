@@ -44,6 +44,10 @@ namespace Assets.Scripts.ViewModel
 
     public void SetState(GameState state)
     {
+      var message = state.Message;
+      state.Message = null;
+      if(!string.IsNullOrEmpty(message))
+        PrintMessage(message);
       if(state.IsWin)
         SceneManager.LoadScene(0);
 

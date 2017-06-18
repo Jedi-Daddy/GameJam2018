@@ -15,6 +15,7 @@ namespace Assets.Model
     public List<Hero> Heroes;
     public List<Chest> Chests;
     public int? SegmentToRebuild;
+    public string Message;
 
     public Player CurrentPlayer
     {
@@ -37,7 +38,7 @@ namespace Assets.Model
       get { return Maze.GetPassableCells(CurrentHero.CurrentPositionInMaze, Turn).PassibleCells; }
     } 
 
-    public bool TurnForMazeAction { get { return Turn % Players.Count(p => !p.IsDead) == 0; } }
+    public bool TurnForMazeAction { get { return Turn != 0 && Turn % Players.Count(p => !p.IsDead) == 0; } }
   }
 
   public class Player
