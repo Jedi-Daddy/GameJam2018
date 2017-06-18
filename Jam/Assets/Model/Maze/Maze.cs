@@ -142,9 +142,9 @@ namespace Assets.Model.Maze
         }
         else
         {
-          if (isFromFirstColumn && to.SegmentId != 0)
+          if (isFromFirstColumn && to.SegmentId != 1)
             return false;
-          if (!isFromFirstColumn && to.SegmentId != 1)
+          if (!isFromFirstColumn && to.SegmentId != 0)
             return false;
         }
       }
