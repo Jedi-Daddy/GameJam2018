@@ -65,7 +65,7 @@ namespace Assets.Model.Races
           {
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp",
             WallPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp_slim_v",
-            HeroPrefabLocation = "Prefabs\\heroTest"
+            HeroPrefabLocation = "Prefabs\\Hero"
           }
         }
 
