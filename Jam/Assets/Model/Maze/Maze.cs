@@ -65,17 +65,18 @@ namespace Assets.Model.Maze
 
       if(from.CoordsInSegment.X != to.CoordsInSegment.X && from.CoordsInSegment.Y != to.CoordsInSegment.Y)
         return false;
+      
 
       var fromSegment = Segments[from.SegmentId];
       var mazeSide = (int)Math.Sqrt(fromSegment.Matrix.GetLength(0));
       var mazeSideCenter = mazeSide/2;
-      var isFromRightGate = from.CoordsInSegment.X == 0 && from.CoordsInSegment.Y == mazeSideCenter;
-      var isFromLeftGate = from.CoordsInSegment.X == mazeSide - 1 && from.CoordsInSegment.Y == mazeSideCenter;
+      var isFromLeftGate = from.CoordsInSegment.X == 0 && from.CoordsInSegment.Y == mazeSideCenter;
+      var isFromRightGate = from.CoordsInSegment.X == mazeSide - 1 && from.CoordsInSegment.Y == mazeSideCenter;
       var isFromTopGate = from.CoordsInSegment.Y == 0 && from.CoordsInSegment.X == mazeSideCenter;
       var isFromBottomGate = from.CoordsInSegment.Y == mazeSide - 1 && from.CoordsInSegment.X == mazeSideCenter;
 
-      var isToRightGate = to.CoordsInSegment.X == 0 && to.CoordsInSegment.Y == mazeSideCenter;
-      var isToLeftGate = to.CoordsInSegment.X == mazeSide - 1 && to.CoordsInSegment.Y == mazeSideCenter;
+      var isToLeftGate  = to.CoordsInSegment.X == 0 && to.CoordsInSegment.Y == mazeSideCenter;
+      var isToRightGate = to.CoordsInSegment.X == mazeSide - 1 && to.CoordsInSegment.Y == mazeSideCenter;
       var isToTopGate = to.CoordsInSegment.Y == 0 && to.CoordsInSegment.X == mazeSideCenter;
       var isToBottomGate = to.CoordsInSegment.Y == mazeSide - 1 && to.CoordsInSegment.X == mazeSideCenter;
 
@@ -153,11 +154,23 @@ namespace Assets.Model.Maze
     public MazeActionType GetAction()
     {
       return MazeActionType.Nothing;
+      var rand = new Random();
+      if (rand.NextDouble() < 0.5)
+        return MazeActionType.Teleport;
+      else
+      {
+        return MazeActionType.Teleport;
+      }
     }
 
     public List<MazeObject> GetObjects(LocationInMaze currentPositionInMaze)
     {
       return MazeObjects.Where(mo => currentPositionInMaze.CoordsInSegment.Equals(currentPositionInMaze)).ToList();
+    }
+
+    public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze heroPosition)
+    {
+      return true;
     }
   }
 }

@@ -9,5 +9,10 @@ namespace Assets.Scripts
     {
       transform.localPosition = CoordsUtility.GetUiPosition(newLocation);
     }
+
+    public void Die()
+    {
+      Destroy(this);
+    }
   }
 }

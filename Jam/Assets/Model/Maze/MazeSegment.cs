@@ -86,6 +86,9 @@ namespace Assets.Model.Maze
 
     public bool CanPass(Point from, Point to)
     {
+      if(Math.Abs(from.X - to.X) > 1 || Math.Abs(to.Y - from.Y) > 1 ||
+        (Math.Abs(from.X - to.X) == 1 && Math.Abs(to.Y - from.Y) == 1))
+        return false;
       var cellFrom = _cellsByCoords[from];
       var cellTo = _cellsByCoords[to];
       return Matrix[cellFrom.Id, cellTo.Id] == 1;

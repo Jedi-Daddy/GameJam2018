@@ -9,6 +9,29 @@ namespace Assets.Model.Races
   {
     private static Dictionary<Race, RaceInfo> Races;
 
+    private static Dictionary<ChestOpeningResultType, ChestVisualInfo> ChestTypes = new Dictionary
+      <ChestOpeningResultType, ChestVisualInfo>
+    {
+      {
+        ChestOpeningResultType.Weapon, new ChestVisualInfo
+        {
+          PrefabLocation = "Prefabs\\weaponChest"
+        }
+      },
+      {
+        ChestOpeningResultType.Anh, new ChestVisualInfo
+        {
+          PrefabLocation = "Prefabs\\anhChest"
+        }
+      },
+      {
+        ChestOpeningResultType.Ruby, new ChestVisualInfo
+        {
+          PrefabLocation = "Prefabs\\goldChest"
+        }
+      }
+    };
+
     static RaceManager()
     {
       Races = new Dictionary<Race, RaceInfo>
@@ -64,7 +87,17 @@ namespace Assets.Model.Races
       return Races[race].HeroPrefabLocation;
     }
 
+    public static string GetChestPrefabLocation(ChestOpeningResultType chestType)
+    {
+      return ChestTypes[chestType].PrefabLocation;
+    }
+
     //public 
+  }
+
+  internal class ChestVisualInfo
+  {
+    public string PrefabLocation;
   }
 
   public class RaceInfo
