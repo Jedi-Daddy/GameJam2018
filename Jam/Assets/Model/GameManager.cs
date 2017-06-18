@@ -19,7 +19,8 @@ namespace Assets.Model
     public GameState GameState;
     public const int PlayersCount = 4;
     public const int ActionCountDefault = 3;
-    public event Action<GameState> NewTurn; 
+    public event Action<GameState> NewTurn;
+    public event Action<GameState> ActionPointUsed; 
 
     private static readonly List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
@@ -75,13 +76,21 @@ namespace Assets.Model
       if(!GameState.Maze.CanPass(heroToMove.CurrentPositionInMaze, positionToMove, GameState.Turn))
         return;
       heroToMove.Move(positionToMove);
-      curentPlayer.ActionPoints --;
+      OnAction();
       if(curentPlayer.ActionPoints == 0)
         StartNewTurn();
       //var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
       //if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
       //  return;
       //return HeroMoveResult.Default;
+    }
+
+    public void OnAction()
+    {
+      GameState.CurrentPlayer.ActionPoints--;
+      if (ActionPointUsed != null)
+        ActionPointUsed(GameState);
+
     }
 
     public void ClickHero(Hero hero)

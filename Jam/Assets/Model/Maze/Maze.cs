@@ -156,7 +156,7 @@ namespace Assets.Model.Maze
       return MazeActionType.Nothing;
       var rand = new Random();
       if (rand.NextDouble() < 0.5)
-        return MazeActionType.Teleport;
+        return MazeActionType.Lock;
       else
       {
         return MazeActionType.Teleport;
@@ -170,6 +170,12 @@ namespace Assets.Model.Maze
 
     public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze heroPosition)
     {
+      if (currentPositionInMaze.SegmentId != heroPosition.SegmentId)
+        return false;
+
+      if(!Segments[currentPositionInMaze.SegmentId].CanPass(currentPositionInMaze.CoordsInSegment, heroPosition.CoordsInSegment))
+        return false;
+
       return true;
     }
   }
