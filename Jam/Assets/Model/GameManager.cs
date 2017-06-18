@@ -78,6 +78,7 @@ namespace Assets.Model
       //We dont validate here
       //GameState.Maze.CanPass(heroeToMove.CurrentPositionInMaze, positionToMove);
       heroToMove.CurrentPositionInMaze = positionToMove;
+      heroToMove.Move(positionToMove);
       var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
       if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
         return HeroMoveResult.StandsOnChest;

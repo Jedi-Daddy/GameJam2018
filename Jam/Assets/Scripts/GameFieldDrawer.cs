@@ -122,6 +122,8 @@ namespace Assets.Scripts
     {
       var heroObject = GameObject.Instantiate(Resources.Load("Prefabs\\heroTest")) as GameObject;
       heroObject.transform.SetParent(fieldContainer.transform);
+      var heroMover = heroObject.AddComponent<HeroMovementListener>();
+      hero.OnMove += heroMover.Move;
       heroObject.transform.localPosition = CoordsUtility.GetUiPosition(hero.CurrentPositionInMaze);
     }
   }
