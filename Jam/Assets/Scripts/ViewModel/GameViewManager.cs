@@ -28,6 +28,10 @@ namespace Assets.Scripts.ViewModel
       {
         GameFieldDrawer.DrawHero(FieldContainer, hero);
       }
+      foreach (var chest in state.Chests)
+      {
+        GameFieldDrawer.DrawChest(FieldContainer, chest);
+      }
     }
     
     public void SetHpValue(int currentHP)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Model.Maze;
 using Assets.Model.Maze.MazeObjects;
+using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Model.Races;
 using UnityEngine;
 
@@ -124,7 +125,17 @@ namespace Assets.Scripts
       heroObject.transform.SetParent(fieldContainer.transform);
       var heroMover = heroObject.AddComponent<HeroMovementListener>();
       hero.OnMove += heroMover.Move;
+      hero.OnDie += heroMover.Die;
       heroObject.transform.localPosition = CoordsUtility.GetUiPosition(hero.CurrentPositionInMaze);
+    }
+
+    public static void DrawChest(RectTransform fieldContainer, Chest chest)
+    {
+      var chestObject = GameObject.Instantiate(Resources.Load(RaceManager.GetChestPrefabLocation(chest.ChestResultType))) as GameObject;
+      chestObject.transform.SetParent(fieldContainer.transform);
+      var chestRemover = chestObject.AddComponent<ChestTakingListener>();
+      chest.Take += chestRemover.Delete;
+      chestObject.transform.localPosition = CoordsUtility.GetUiPosition(chest.CurrentPositionInMaze);
     }
   }
 }

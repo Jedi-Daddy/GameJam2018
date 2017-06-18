@@ -109,8 +109,10 @@
     <Compile Include="Assets\Model\Weapon.cs" />
     <Compile Include="Assets\Model\WeaponChest.cs" />
     <Compile Include="Assets\Scripts\CameraToRectSizeSetter.cs" />
+    <Compile Include="Assets\Scripts\ChestTakingListener.cs" />
     <Compile Include="Assets\Scripts\CoordsUtility.cs" />
     <Compile Include="Assets\Scripts\GameFieldDrawer.cs" />
+    <Compile Include="Assets\Scripts\HeroClickListener.cs" />
     <Compile Include="Assets\Scripts\HeroMovementListener.cs" />
     <Compile Include="Assets\Scripts\LoadOnClick.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />

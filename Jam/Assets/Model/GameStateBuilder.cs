@@ -43,10 +43,10 @@ namespace Assets.Model
     {
       private static readonly List<Chest> ChestsToPlace = new List<Chest>
       {
-        new AnhChest {Anh = new Anh {HealingPower = 50}},
-        new AnhChest {Anh = new Anh {HealingPower = 25}},
-        new WeaponChest {Weapon = new Weapon {Damage = 40}},
-        new WeaponChest {Weapon = new Weapon {Damage = 20}},
+        new AnhChest {Anh = new Anh {HealingPower = 50}, ChestResultType = ChestOpeningResultType.Anh},
+        new AnhChest {Anh = new Anh {HealingPower = 25}, ChestResultType = ChestOpeningResultType.Anh},
+        new WeaponChest {Weapon = new Weapon {Damage = 40},ChestResultType = ChestOpeningResultType.Weapon},
+        new WeaponChest {Weapon = new Weapon {Damage = 20},ChestResultType = ChestOpeningResultType.Weapon},
       };
 
       private readonly List<Chest> _chestsLeftToPlace;
@@ -71,6 +71,7 @@ namespace Assets.Model
         {
           new RubyChest
           {
+            ChestResultType = ChestOpeningResultType.Ruby,
             CurrentPositionInMaze = new LocationInMaze()
             {
               SegmentId = ownerId,

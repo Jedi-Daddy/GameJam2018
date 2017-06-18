@@ -6,6 +6,7 @@ namespace Assets.Model.Maze.MazeObjects.Chest
 
     public override ChestOpeningResult OpenChest()
     {
+      OnTake();
       return new ChestOpeningResult
       {
         ChestOpeningResultType = ChestOpeningResultType.Anh,

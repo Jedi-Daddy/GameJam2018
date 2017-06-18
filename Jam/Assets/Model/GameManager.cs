@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Model.Maze;
+using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Scripts;
 
@@ -22,7 +23,8 @@ namespace Assets.Model
 
     private static readonly List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
-      new BlockMazeActionApplier()
+      new BlockMazeActionApplier(),
+      new TeleportMazeActionApplier()
     };
 
     public void StartNewGame()
@@ -72,7 +74,6 @@ namespace Assets.Model
       //We dont validate here
       if(!GameState.Maze.CanPass(heroToMove.CurrentPositionInMaze, positionToMove, GameState.Turn))
         return;
-      heroToMove.CurrentPositionInMaze = positionToMove;
       heroToMove.Move(positionToMove);
       curentPlayer.ActionPoints --;
       if(curentPlayer.ActionPoints == 0)
@@ -83,12 +84,66 @@ namespace Assets.Model
       //return HeroMoveResult.Default;
     }
 
+    public void AttackHero(LocationInMaze heroPosition)
+    {
+      var curentPlayer = GameState.CurrentPlayer;
+      if (curentPlayer.Slot == null || curentPlayer.Slot.Weapon == null)
+        return;
+      var damage = curentPlayer.Slot.Weapon.Damage;
+      var objectsOnCell = GameState.Maze.GetObjects(heroPosition);
+      if (objectsOnCell == null || !objectsOnCell.Any())
+        return;
+
+      var heroObj = objectsOnCell.FirstOrDefault(h => h.GetType() == typeof (Hero));
+      if (heroObj == null)
+        return;
+
+      if(!GameState.Maze.CanSee(GameState.CurrentHero.CurrentPositionInMaze, heroPosition))
+        return;
+
+      var heroToAttack = heroObj as Hero;
+      heroToAttack.HitPoints -= damage;
+      curentPlayer.Slot = null;
+      if (heroToAttack.HitPoints <= 0)
+      {
+        var playerOwner = GameState.Players[heroToAttack.OwnerId.Value];
+        if (playerOwner.Slot != null && playerOwner.Slot.Anh != null)
+        {
+          heroToAttack.HitPoints = playerOwner.Slot.Anh.HealingPower;
+          playerOwner.Slot = null;
+        }
+        else
+        {
+          playerOwner.IsDead = true;
+          heroToAttack.Die();
+        }
+      }
+
+    }
+
     public ChestOpeningResult OpenChest()
     {
       var curentPlayer = GameState.CurrentPlayer;
       var hero = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
       var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
       return chest.OpenChest();
+    }
+  }
+
+  internal class TeleportMazeActionApplier : IMazeActionApplier
+  {
+    public void ApplyAction(GameState state, MazeActionType actionType)
+    {
+      if(actionType != MazeActionType.Teleport)
+        return;
+      var random = new Random();
+      var locationToTeleport = new LocationInMaze
+      {
+        SegmentId = random.Next(0, state.Maze.Segments.Count),
+        CoordsInSegment = new Point(random.Next(0, 5), random.Next(0, 5)),
+      };
+      var heroVictim = state.Heroes[random.Next(0, state.Heroes.Count)];
+      heroVictim.Move(locationToTeleport);
     }
   }
 
