@@ -107,7 +107,9 @@ namespace Assets.Scripts.ViewModel
         var card = cards[i];
         var cardTemplate = Resources.Load(card.Type == CardType.Attack ? "Prefabs\\attackCardPrefab" : "Prefabs\\defenceCard") as GameObject;
         var cardObj = Instantiate(cardTemplate, CardHolder);
-        cardObj.GetComponent<CardListener>().Card = card;
+        var cardListener = cardObj.GetComponent<CardListener>();
+        cardListener.Card = card;
+        cardListener.SetDescription();
         cardObj.transform.localPosition = Vector3.zero;
 
         if (i + 1 < cards.Count)

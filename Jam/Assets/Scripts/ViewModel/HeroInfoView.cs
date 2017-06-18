@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Assets.Model;
 using Assets.Model.Maze.MazeObjects;
 using UnityEngine;
@@ -15,6 +16,15 @@ namespace Assets.Scripts.ViewModel
     public Text EnergyPointsText;
     public Image ActiveFrameImage; //todo: set enable when hero is active
     public RectTransform CurrentWeaponContainer;
+    public Text Nickname;
+
+    private readonly Dictionary<Race, string> Nicks = new Dictionary<Race, string>
+    {
+      {Race.Elves, "L@g@Li$"},
+      {Race.Ent, "Treeen2s_4_C@n@bi$"},
+      {Race.Orc, "0r(rim THE GLu20n0u$"},
+      {Race.Vampire, "M0$$Fer@2"}
+    };
     
     public void UpdateHero(int maxHp, Player player, Hero hero)
     {
@@ -23,6 +33,15 @@ namespace Assets.Scripts.ViewModel
       SetEnergyPointsCount(player.ActionPoints);
       SetAvatar(hero.Race);
       SetWeaponIcon(player.Slot);
+      SetNick(hero.Race);
+    }
+
+    public void SetNick(Race race)
+    {
+      if (Nickname == null)
+        return;
+
+      Nickname.text = Nicks[race];
     }
 
     public void SetHpValue(int currentHp)
