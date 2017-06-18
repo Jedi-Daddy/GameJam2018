@@ -57,14 +57,22 @@ namespace Assets.Scripts.ViewModel
         for (var i = 0; i < CardHolder.childCount; i++)
           Destroy(CardHolder.GetChild(i).gameObject);
 
-      foreach (var card in state.CurrentPlayer.Cards)
+      var cards = state.CurrentPlayer.Cards;
+
+      for (var i = 0; i < cards.Count; i++)
       {
-        var cardTemplate = card.Type == CardType.Attack
-          ? Instantiate(Resources.Load("Prefabs\\attackCardPrefab") as GameObject)
-          : Instantiate(Resources.Load("Prefabs\\defenceCard") as GameObject);
-        cardTemplate.GetComponent<CardListener>().Card = card;
-        cardTemplate.transform.SetParent(CardHolder);
-        //cardButtons.Card = card;
+        var card = cards[i];
+        var cardTemplate = Resources.Load(card.Type == CardType.Attack ? "Prefabs\\attackCardPrefab" : "Prefabs\\defenceCard") as GameObject;
+        var cardObj = Instantiate(cardTemplate, CardHolder);
+        cardObj.GetComponent<CardListener>().Card = card;
+        cardObj.transform.localPosition = Vector3.zero;
+
+        if (i + 1 < cards.Count)
+        {
+          var sepTemplate = Resources.Load("Prefabs\\Separator") as GameObject;
+          var sepObj = Instantiate(sepTemplate, CardHolder);
+          sepObj.transform.localPosition = Vector3.zero;
+        }
       }
     }
   }
