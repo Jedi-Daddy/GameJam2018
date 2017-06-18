@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Model.Maze;
 using Assets.Model.Maze.MazeObjects.Chest;
@@ -17,52 +18,43 @@ namespace Assets.Model
     public GameState GameState;
     public const int PlayersCount = 4;
     public const int ActionCountDefault = 3;
+    public event Action<GameState> NewTurn; 
 
     private static readonly List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
-
+      new BlockMazeActionApplier()
     };
 
-    public StartTurnResult StartNewGame()
+    public void StartNewGame()
     {
       GameState = GameStateBuilder.BuildNewGameState(PlayersCount);
-      var state = StartNewTurn();
-      state.CurentState = GameState;
-
-      return state;
+      StartNewTurn();
+      //return GameState;
     }
 
-    public StartTurnResult StartNewTurn()
+    public void StartNewTurn()
     {
       ++GameState.Turn;
-      StartTurnResult startTurnResult = null;
       if (GameState.CurrentPlayer.IsDead)
         ++GameState.Turn;
-      startTurnResult = (startTurnResult ?? new StartTurnResult());
-      GameState.CurrentPlayer.ActionPoints = ActionCountDefault;
 
-      MazeActionResult mazeActionResult = null;
+      GameState.CurrentPlayer.ActionPoints = ActionCountDefault;
       if (GameState.TurnForMazeAction)
       {
         var action = GameState.Maze.GetAction();
-        mazeActionResult = ApplyMazeAction(action);
+        ApplyMazeAction(action);
       }
 
-      startTurnResult.MazeActionResult = mazeActionResult;
-
-      var playerHero = GameState.Heroes.First(h => h.OwnerId == GameState.CurrentPlayer.Id);
-      startTurnResult.PlayerHero = playerHero;
-      startTurnResult.WhereHeroCanMove = GameState.Maze.GetPassableCells(playerHero.CurrentPositionInMaze, GameState.Turn);
-
-      return startTurnResult;
+      //var playerHero = GameState.Heroes.First(h => h.OwnerId == GameState.CurrentPlayer.Id);
+      //startTurnResult.PlayerHero = playerHero;
+      //startTurnResult.WhereHeroCanMove = GameState.Maze.GetPassableCells(playerHero.CurrentPositionInMaze, GameState.Turn);
+      NewTurn(GameState);
     }
 
-    private MazeActionResult ApplyMazeAction(MazeActionType action)
+    private void ApplyMazeAction(MazeActionType action)
     {
-      var result = new MazeActionResult();
       foreach (var actionApplier in ActionAppliers)
-        actionApplier.ApplyAction(GameState, action, result);
-      return result;
+        actionApplier.ApplyAction(GameState, action);
     }
 
     public enum HeroMoveResult
@@ -83,6 +75,8 @@ namespace Assets.Model
       heroToMove.CurrentPositionInMaze = positionToMove;
       heroToMove.Move(positionToMove);
       curentPlayer.ActionPoints --;
+      if(curentPlayer.ActionPoints == 0)
+        StartNewTurn();
       //var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
       //if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
       //  return;
@@ -97,6 +91,23 @@ namespace Assets.Model
       return chest.OpenChest();
     }
   }
+
+  internal class BlockMazeActionApplier : IMazeActionApplier
+  {
+    public void ApplyAction(GameState state, MazeActionType actionType)
+    {
+      if(actionType != MazeActionType.Lock)
+        return;
+
+      var random = new Random();
+      state.Maze.Segments[random.Next(0,state.Maze.Segments.Count)].SegmentSpecial.SegmentEffects.Add(new MazeSegmentEffect
+      {
+        EffectType = MazeSegmentEffectType.Blocked,
+        TurnUntil = state.Turn + 2 * state.Players.Count(p=>!p.IsDead)
+      });
+    }
+  }
+
   public class ChestOpeningResult
   {
     public ChestOpeningResultType ChestOpeningResultType;
