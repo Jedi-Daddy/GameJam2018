@@ -35,6 +35,11 @@ namespace Assets.Scripts.ViewModel
         HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
         j++;
       }
+
+      foreach (var chest in state.Chests)
+      {
+        GameFieldDrawer.DrawChest(FieldContainer, chest);
+      }
     }
   }
 }
