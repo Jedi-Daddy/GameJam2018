@@ -71,18 +71,22 @@ namespace Assets.Model
       StandsOnChest = 1,
     }
 
-    public HeroMoveResult MoveHero(LocationInMaze positionToMove)
+    public void MoveHero(LocationInMaze positionToMove)
     {
       var curentPlayer = GameState.CurrentPlayer;
       var heroToMove = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
+      if (curentPlayer.ActionPoints <= 0)
+        return;
       //We dont validate here
-      //GameState.Maze.CanPass(heroeToMove.CurrentPositionInMaze, positionToMove);
+      if(!GameState.Maze.CanPass(heroToMove.CurrentPositionInMaze, positionToMove, GameState.Turn))
+        return;
       heroToMove.CurrentPositionInMaze = positionToMove;
       heroToMove.Move(positionToMove);
-      var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
-      if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
-        return HeroMoveResult.StandsOnChest;
-      return HeroMoveResult.Default;
+      curentPlayer.ActionPoints --;
+      //var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
+      //if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
+      //  return;
+      //return HeroMoveResult.Default;
     }
 
     public ChestOpeningResult OpenChest()

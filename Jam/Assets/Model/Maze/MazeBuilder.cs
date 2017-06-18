@@ -24,7 +24,16 @@ namespace Assets.Model.Maze
     {
       var result = new Maze(playersCount) { Segments = new List<MazeSegment>(playersCount) };
       for (int i = 0; i < playersCount; i++)
-        result.Segments.Add(_segmentTemplates[_random.Next(0, _segmentTemplates.Count)]);
+      {
+        var template = _segmentTemplates[_random.Next(0, _segmentTemplates.Count)];
+        var newtemplate = template.Clone();
+        newtemplate.SegmentSpecial = new SegmentSpecial
+        {
+          SegmentEffects = new List<MazeSegmentEffect>(),
+          RaceType = (Race) i
+        };
+        result.Segments.Add(newtemplate);
+      }
       return result;
     }
   }

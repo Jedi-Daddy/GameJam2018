@@ -5,11 +5,16 @@ using System.Linq;
 
 namespace Assets.Model.Maze
 {
+  public class SegmentSpecial
+  {
+    public Race RaceType = Race.Elves;
+    public List<MazeSegmentEffect> SegmentEffects;
+  }
+
   public class MazeSegment
   {
     public int[,] Matrix;
-    public Race RaceType = Race.Elves;
-    public List<MazeSegmentEffect> SegmentEffects;
+    public SegmentSpecial SegmentSpecial;
 
     public List<CellInfo> Cells; 
     private readonly Dictionary<int, CellInfo> _cellsById;
@@ -23,11 +28,19 @@ namespace Assets.Model.Maze
       new Point(3, 3),
       new Point(3, 1)
     };
+
+    public MazeSegment(MazeSegment segment)
+    {
+      Matrix = segment.Matrix;
+      Cells = new List<CellInfo>(segment.Cells);
+      _cellsById = new Dictionary<int, CellInfo>();
+      _cellsByCoords = new Dictionary<Point, CellInfo>();
+      Cache();
+    }
   
     public MazeSegment(string templateLocation)
     {
       var fileReader = new StreamReader(File.OpenRead(templateLocation));
-      SegmentEffects = new List<MazeSegmentEffect>();
       string textLine = null;
       int lineNumber = 0;
       Cells = new List<CellInfo>();
@@ -58,8 +71,16 @@ namespace Assets.Model.Maze
           }
         };
         Cells.Add(cellToAdd);
-        _cellsById.Add(cellToAdd.Id, cellToAdd);
-        _cellsByCoords.Add(cellToAdd.Coords, cellToAdd);
+      }
+      Cache();
+    }
+
+    public void Cache()
+    {
+      foreach (var cellInfo in Cells)
+      {
+        _cellsById.Add(cellInfo.Id, cellInfo);
+        _cellsByCoords.Add(cellInfo.Coords, cellInfo);
       }
     }
 
@@ -82,7 +103,14 @@ namespace Assets.Model.Maze
 
     public bool HasEffect(MazeSegmentEffectType type, int currentGameTurn)
     {
-      return SegmentEffects.Any(se => se.EffectType == type && se.TurnUntil >= currentGameTurn);
+      return SegmentSpecial != null
+             && SegmentSpecial.SegmentEffects != null
+             && SegmentSpecial.SegmentEffects.Any(se => se.EffectType == type && se.TurnUntil >= currentGameTurn);
+    }
+
+    public MazeSegment Clone()
+    {
+      return new MazeSegment(this);
     }
   }
 

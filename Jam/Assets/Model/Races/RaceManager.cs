@@ -17,30 +17,34 @@ namespace Assets.Model.Races
           Race.Elves, new RaceInfo
           {
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Elf",
-            WallPrefabLocation = "Prefabs\\MapElements\\Tile_Elf_slim_v"
+            WallPrefabLocation = "Prefabs\\MapElements\\Tile_Elf_slim_v",
+            HeroPrefabLocation ="Prefabs\\heroTest"
           }
         },
-		{
-			Race.Orc, new RaceInfo
-			{
-				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Orc",
-				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Orc_slim_v"
-			}
-		},
-		{
-			Race.Ent, new RaceInfo
-			{
-				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Ent",
-				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Ent_slim_v"
-			}
-		},
-		{
-			Race.Vampire, new RaceInfo
-			{
-				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp",
-				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp_slim_v"
-			}
-		}
+        {
+          Race.Orc, new RaceInfo
+          {
+            CellPrefabLocation = "Prefabs\\MapElements\\Tile_Orc",
+            WallPrefabLocation = "Prefabs\\MapElements\\Tile_Orc_slim_v",
+            HeroPrefabLocation ="Prefabs\\heroTest"
+          }
+        },
+        {
+          Race.Ent, new RaceInfo
+          {
+            CellPrefabLocation = "Prefabs\\MapElements\\Tile_Ent",
+            WallPrefabLocation = "Prefabs\\MapElements\\Tile_Ent_slim_v",
+            HeroPrefabLocation ="Prefabs\\heroTest"
+          }
+        },
+        {
+          Race.Vampire, new RaceInfo
+          {
+            CellPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp",
+            WallPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp_slim_v",
+            HeroPrefabLocation = "Prefabs\\heroTest"
+          }
+        }
 
       };
     }
@@ -55,6 +59,11 @@ namespace Assets.Model.Races
       return Races[race].WallPrefabLocation;
     }
 
+    public static string GetHeroPrefabLocation(Race race)
+    {
+      return Races[race].HeroPrefabLocation;
+    }
+
     //public 
   }
 
@@ -62,5 +71,6 @@ namespace Assets.Model.Races
   {
     public string CellPrefabLocation;
     public string WallPrefabLocation;
+    public string HeroPrefabLocation;
   }
 }

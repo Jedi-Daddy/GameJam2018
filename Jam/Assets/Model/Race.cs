@@ -2,9 +2,9 @@
 {
   public enum Race
   {
-    Elves = 1,
-    Ent = 2,
-    Orc = 3,
-    Vampire = 4
+    Elves = 0,
+    Ent = 1,
+    Orc = 2,
+    Vampire = 3
   }
 }

@@ -27,6 +27,7 @@ namespace Assets.Model
         gameState.Heroes.Add(new Hero
         {
           OwnerId = i,
+          Race = (Race)i,
           CurrentPositionInMaze = new LocationInMaze
           {
             SegmentId = i,
