@@ -21,6 +21,11 @@ namespace Assets.Scripts.ViewModel
       GameFieldDrawer.DrawField(FieldContainer, state.Maze);
       var heroes = state.Heroes;
 
+      foreach (var chest in state.Chests)
+      {
+        GameFieldDrawer.DrawChest(FieldContainer, chest);
+      }
+
       for (int i = 0; i < heroes.Count; i++)
       {
         var hero = state.Heroes[i];
@@ -28,11 +33,7 @@ namespace Assets.Scripts.ViewModel
         if (hero.HitPoints > 0)
           GameFieldDrawer.DrawHero(FieldContainer, hero);
       }
-
-      foreach (var chest in state.Chests)
-      {
-        GameFieldDrawer.DrawChest(FieldContainer, chest);
-      }
+      
       SetState(state);
     }
 

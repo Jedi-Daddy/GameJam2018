@@ -10,7 +10,7 @@ namespace Assets.Scripts
   {
     public void Delete()
     {
-      Destroy(this);
+      Destroy(this.gameObject);
     }
   }
 }

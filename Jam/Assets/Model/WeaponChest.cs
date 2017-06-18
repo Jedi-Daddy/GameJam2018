@@ -7,6 +7,7 @@ namespace Assets.Model
     public Weapon Weapon;
     public override ChestOpeningResult OpenChest()
     {
+      OnTake();
       return new ChestOpeningResult
       {
         ChestOpeningResultType = ChestOpeningResultType.Weapon,

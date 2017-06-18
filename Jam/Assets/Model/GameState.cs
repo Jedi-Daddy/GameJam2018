@@ -34,6 +34,7 @@ namespace Assets.Model
     public int ActionPoints;
     public List<Card> Cards;
     public ItemSlot Slot;
+    public int RubyAmmount;
 
     public Card ActiveCard
     {

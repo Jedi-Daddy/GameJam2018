@@ -22,6 +22,11 @@ namespace Assets.Model.Maze
       MazeObjects = new List<MazeObject>();
     }
 
+    public void AddMazeObject(MazeObject mazeObject)
+    {
+      MazeObjects.Add(mazeObject);
+    }
+
     public MazePassibleResult GetPassableCells(LocationInMaze from, int gameTurn)
     {
       var result = new MazePassibleResult
@@ -165,7 +170,7 @@ namespace Assets.Model.Maze
 
     public List<MazeObject> GetObjects(LocationInMaze currentPositionInMaze)
     {
-      return MazeObjects.Where(mo => currentPositionInMaze.CoordsInSegment.Equals(currentPositionInMaze)).ToList();
+      return MazeObjects.Where(mo => mo.CurrentPositionInMaze.Equals(currentPositionInMaze)).ToList();
     }
 
     public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze heroPosition)

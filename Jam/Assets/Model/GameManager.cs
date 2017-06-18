@@ -66,12 +66,6 @@ namespace Assets.Model
         actionApplier.ApplyAction(GameState, action);
     }
 
-    public enum HeroMoveResult
-    {
-      Default = 0,
-      StandsOnChest = 1,
-    }
-
     public void MoveHero(LocationInMaze positionToMove)
     {
       var curentPlayer = GameState.CurrentPlayer;
@@ -81,6 +75,28 @@ namespace Assets.Model
       //We dont validate here
       if(!GameState.Maze.CanPass(heroToMove.CurrentPositionInMaze, positionToMove, GameState.Turn))
         return;
+
+      var objectsOnCell = GameState.Maze.GetObjects(positionToMove);
+      var chests = new List<Chest>();
+      foreach (var mo in objectsOnCell)
+      {
+        if(mo as Chest != null)
+          chests.Add((Chest)mo);
+      }
+        
+
+      var chest = chests.FirstOrDefault();
+      if (chest != null && chest.OwnerId!= GameState.CurrentPlayer.Id) 
+      {
+        var openChestResult = chest.OpenChest();
+        if (openChestResult.Rubys > 0)
+          GameState.CurrentPlayer.RubyAmmount += openChestResult.Rubys;
+        if(openChestResult.Weapon != null)
+          GameState.CurrentPlayer.Slot = new ItemSlot(openChestResult.Weapon);
+        if (openChestResult.Anh != null)
+          GameState.CurrentPlayer.Slot = new ItemSlot(openChestResult.Anh);
+      }
+
       heroToMove.Move(positionToMove);
       OnAction();
       if(curentPlayer.ActionPoints == 0)
@@ -188,13 +204,13 @@ namespace Assets.Model
       }
     }
 
-    public ChestOpeningResult OpenChest()
-    {
-      var curentPlayer = GameState.CurrentPlayer;
-      var hero = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
-      var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
-      return chest.OpenChest();
-    }
+    //public ChestOpeningResult OpenChest()
+    //{
+    //  var curentPlayer = GameState.CurrentPlayer;
+    //  var hero = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
+    //  var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
+    //  return chest.OpenChest();
+    //}
   }
 
   internal class TeleportMazeActionApplier : IMazeActionApplier

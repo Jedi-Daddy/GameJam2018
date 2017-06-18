@@ -43,6 +43,16 @@ namespace Assets.Model
         });
         gameState.Chests.AddRange(chestsPlacer.GetChestForSegment(i));
       }
+      foreach (var hero in gameState.Heroes)
+      {
+        gameState.Maze.AddMazeObject(hero);
+      }
+
+      foreach (var chest in gameState.Chests)
+      {
+        gameState.Maze.AddMazeObject(chest);
+      }
+      
       return gameState;
     }
 

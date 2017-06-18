@@ -8,6 +8,7 @@ namespace Assets.Model
 
     public override ChestOpeningResult OpenChest()
     {
+      OnTake();
       return new ChestOpeningResult
       {
         ChestOpeningResultType = ChestOpeningResultType.Ruby,
