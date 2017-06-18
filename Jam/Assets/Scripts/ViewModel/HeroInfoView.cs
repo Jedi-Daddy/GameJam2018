@@ -79,12 +79,15 @@ namespace Assets.Scripts.ViewModel
 
     public void SetWeaponIcon(ItemSlot item)
     {
-      if (CurrentWeaponContainer == null || item == null)
+      if (CurrentWeaponContainer == null)
         return;
 
       if (CurrentWeaponContainer.childCount > 0)
         for (var i = 0; i < CurrentWeaponContainer.childCount; i++)
           Destroy(CurrentWeaponContainer.GetChild(i).gameObject);
+
+      if (item == null)
+        return;
 
       var prefabName = string.Empty;
 
