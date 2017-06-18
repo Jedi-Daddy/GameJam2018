@@ -80,10 +80,10 @@ namespace Assets.Model.Maze
       var isToTopGate = to.CoordsInSegment.Y == 0 && to.CoordsInSegment.X == mazeSideCenter;
       var isToBottomGate = to.CoordsInSegment.Y == mazeSide - 1 && to.CoordsInSegment.X == mazeSideCenter;
 
-      var isFromFirstRow = from.SegmentId/Segments.Count == 0;
-      var isFromFirstColumn = from.SegmentId % Segments.Count == 0;
-      var onSameRow = from.SegmentId/Segments.Count == to.SegmentId/Segments.Count;
-      var onSameColumn = from.SegmentId % Segments.Count == to.SegmentId % Segments.Count;
+      var isFromFirstRow = from.SegmentId/2 == 0;
+      var isFromFirstColumn = from.SegmentId % 2 == 0;
+      var onSameRow = from.SegmentId/2 == to.SegmentId/2;
+      var onSameColumn = from.SegmentId % 2 == to.SegmentId % 2;
 
       if (!isFromRightGate && !isFromLeftGate && !isFromTopGate && !isFromBottomGate)
         return false;
