@@ -84,24 +84,26 @@ namespace Assets.Model
       //return HeroMoveResult.Default;
     }
 
-    public void AttackHero(LocationInMaze heroPosition)
+    public void ClickHero(Hero hero)
+    {
+      if(GameState.CurrentHero == hero)
+        return;
+      else
+      {
+        AttackHero(hero);
+      }
+    }
+
+    public void AttackHero(Hero heroToAttack)
     {
       var curentPlayer = GameState.CurrentPlayer;
       if (curentPlayer.Slot == null || curentPlayer.Slot.Weapon == null)
         return;
       var damage = curentPlayer.Slot.Weapon.Damage;
-      var objectsOnCell = GameState.Maze.GetObjects(heroPosition);
-      if (objectsOnCell == null || !objectsOnCell.Any())
+
+      if (!GameState.Maze.CanSee(GameState.CurrentHero.CurrentPositionInMaze, heroToAttack.CurrentPositionInMaze))
         return;
 
-      var heroObj = objectsOnCell.FirstOrDefault(h => h.GetType() == typeof (Hero));
-      if (heroObj == null)
-        return;
-
-      if(!GameState.Maze.CanSee(GameState.CurrentHero.CurrentPositionInMaze, heroPosition))
-        return;
-
-      var heroToAttack = heroObj as Hero;
       heroToAttack.HitPoints -= damage;
       curentPlayer.Slot = null;
       if (heroToAttack.HitPoints <= 0)

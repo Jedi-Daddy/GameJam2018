@@ -124,6 +124,8 @@ namespace Assets.Scripts
       var heroObject = GameObject.Instantiate(Resources.Load(RaceManager.GetHeroPrefabLocation(hero.Race))) as GameObject;
       heroObject.transform.SetParent(fieldContainer.transform);
       var heroMover = heroObject.AddComponent<HeroMovementListener>();
+      var heroClicker = heroObject.GetComponent<HeroClickListener>();
+      heroClicker.Hero = hero;
       hero.OnMove += heroMover.Move;
       hero.OnDie += heroMover.Die;
       heroObject.transform.localPosition = CoordsUtility.GetUiPosition(hero.CurrentPositionInMaze);
