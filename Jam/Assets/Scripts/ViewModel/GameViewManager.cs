@@ -27,13 +27,14 @@ namespace Assets.Scripts.ViewModel
       {
         var hero = state.Heroes[i];
 
-        GameFieldDrawer.DrawHero(FieldContainer, hero);
+        if (hero != state.CurrentHero)
+        {
+          HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
+          j++;
+        }
 
-        if (hero == state.CurrentHero) 
-          continue;
-
-        HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
-        j++;
+        if(hero.HitPoints > 0)
+          GameFieldDrawer.DrawHero(FieldContainer, hero);
       }
 
       foreach (var chest in state.Chests)

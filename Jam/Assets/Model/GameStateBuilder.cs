@@ -24,7 +24,11 @@ namespace Assets.Model
       gameState.MaxHitPoints = 50;
       for (var i = 0; i < playersCount; i++)
       {
-        gameState.Players.Add(new Player { Id = i });
+        gameState.Players.Add(new Player
+        {
+          Id = i ,
+          Slot = new ItemSlot(new Weapon{Damage = 50})
+        });
         gameState.Heroes.Add(new Hero
         {
           OwnerId = i,

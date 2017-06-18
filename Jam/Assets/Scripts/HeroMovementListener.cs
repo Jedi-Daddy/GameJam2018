@@ -12,7 +12,7 @@ namespace Assets.Scripts
 
     public void Die()
     {
-      Destroy(this);
+      Destroy(this.gameObject);
     }
   }
 }
