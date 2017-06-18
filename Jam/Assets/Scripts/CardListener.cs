@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.Model;
+﻿using Assets.Model;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -15,9 +12,7 @@ namespace Assets.Scripts
       if (Card.IsActive)
         GameManager.Instance.DeactivateCard(Card);
       else
-      {
         GameManager.Instance.ActivateCard(Card);
-      }
     }
   }
 }
