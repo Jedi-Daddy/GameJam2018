@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Model;
+﻿using Assets.Model;
 
 namespace Assets.Scripts
 {
+  public enum WeaponType
+  {
+    Sword,
+    Anh,
+    Banana,
+  }
+
   public static class HeroHelper
   {
     private const string avatarsPath = @"Prefabs\HeroesAvatars\";
@@ -25,6 +28,18 @@ namespace Assets.Scripts
       }
 
       return "Default";
+    }
+
+    public static WeaponType GetActiveItemType(ItemSlot item)
+    {
+      if (item.Anh != null)
+        return WeaponType.Anh;
+      
+      //if (item.Weapon.IsBanana)
+      //  return WeaponType.Banana;
+
+      return WeaponType.Sword;
+
     }
   }
 }

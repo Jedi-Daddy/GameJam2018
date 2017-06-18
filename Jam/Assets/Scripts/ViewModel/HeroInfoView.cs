@@ -1,4 +1,5 @@
-﻿using Assets.Model;
+﻿using System.Runtime.InteropServices;
+using Assets.Model;
 using Assets.Model.Maze.MazeObjects;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,8 @@ namespace Assets.Scripts.ViewModel
     public Slider HpProgressBarSlider;
     public Text HpCountText;
     public Text EnergyPointsText;
-    public Image ActiveFrameImage;
+    public Image ActiveFrameImage; //todo: set enable when hero is active
+    public RectTransform CurrentWeaponContainer;
     
     public void UpdateHero(int maxHp, Player player, Hero hero)
     {
@@ -20,6 +22,7 @@ namespace Assets.Scripts.ViewModel
       SetHpValue(hero.HitPoints);
       SetEnergyPointsCount(player.ActionPoints);
       SetAvatar(hero.Race);
+      SetWeaponIcon(player.Slot);
     }
 
     public void SetHpValue(int currentHp)
@@ -55,8 +58,44 @@ namespace Assets.Scripts.ViewModel
       Object.Instantiate(avatarObj, AvatarParent);
     }
 
+    public void SetWeaponIcon(ItemSlot item)
+    {
+      if (CurrentWeaponContainer == null || item == null)
+        return;
+
+      if (CurrentWeaponContainer.childCount > 0)
+        for (var i = 0; i < CurrentWeaponContainer.childCount; i++)
+          Destroy(CurrentWeaponContainer.GetChild(i).gameObject);
+
+      var prefabName = string.Empty;
+
+      var type = HeroHelper.GetActiveItemType(item);
+
+      switch (type)
+      {
+        case WeaponType.Anh:
+          prefabName = "Prefabs\\Anh";
+          break;
+
+        case WeaponType.Sword:
+          prefabName = "Prefabs\\Sword";
+          break;
+
+        case WeaponType.Banana:
+          prefabName = "Prefabs\\Banana";
+          break;
+      }
+
+      var weaponTamplate = Resources.Load<GameObject>(prefabName);
+      var weaponObj =  Instantiate<GameObject>(weaponTamplate, CurrentWeaponContainer);
+      weaponObj.transform.localPosition = Vector3.zero;
+    }
+
     public void SetActiveFrame(bool isActive)
     {
+      if (ActiveFrameImage == null)
+        return;
+
       ActiveFrameImage.enabled = isActive;
     }
   }
