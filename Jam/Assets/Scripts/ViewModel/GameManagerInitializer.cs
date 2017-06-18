@@ -10,7 +10,9 @@ namespace Assets.Scripts.ViewModel
     private void Start()
     {
       GameManager.Instance.NewTurn += GameUI.SetState;
+      GameManager.Instance.ActionPointUsed += GameUI.SetState;
       GameManager.Instance.StartNewGame();
+      GameUI.Initialize(GameManager.Instance.GameState);
     }
   }
 }

@@ -90,7 +90,6 @@ namespace Assets.Model
       GameState.CurrentPlayer.ActionPoints--;
       if (ActionPointUsed != null)
         ActionPointUsed(GameState);
-
     }
 
     public void ClickHero(Hero hero)

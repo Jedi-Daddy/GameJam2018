@@ -15,31 +15,40 @@ namespace Assets.Scripts.ViewModel
 
     public Text TimerText;
 
-    public void SetState(GameState state)
+    public void Initialize(GameState state)
     {
-      _currentState = state;
-
-      CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);
-
       GameFieldDrawer.DrawField(FieldContainer, state.Maze);
       var heroes = state.Heroes;
-      for (int i = 0, j = 0; i < heroes.Count;i++)
+
+      for (int i = 0; i < heroes.Count; i++)
       {
         var hero = state.Heroes[i];
-
-        if (hero != state.CurrentHero)
-        {
-          HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
-          j++;
-        }
-
-        if(hero.HitPoints > 0)
+     
+        if (hero.HitPoints > 0)
           GameFieldDrawer.DrawHero(FieldContainer, hero);
       }
 
       foreach (var chest in state.Chests)
       {
         GameFieldDrawer.DrawChest(FieldContainer, chest);
+      }
+      SetState(state);
+    }
+
+    public void SetState(GameState state)
+    {
+      _currentState = state;
+
+      CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);
+      var heroes = state.Heroes;
+      for (int i = 0, j = 0; i < heroes.Count;i++)
+      {
+        var hero = state.Heroes[i];
+        if (hero != state.CurrentHero)
+        {
+          HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
+          j++;
+        }
       }
     }
   }
