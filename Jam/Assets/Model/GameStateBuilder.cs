@@ -27,7 +27,8 @@ namespace Assets.Model
         gameState.Players.Add(new Player
         {
           Id = i ,
-          Slot = new ItemSlot(new Weapon{Damage = 50})
+          Slot = new ItemSlot(new Weapon{Damage = 50}),
+          Cards = CardDeck.GetCards(4)
         });
         gameState.Heroes.Add(new Hero
         {

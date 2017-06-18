@@ -19,6 +19,7 @@ namespace Assets.Model
     public GameState GameState;
     public const int PlayersCount = 4;
     public const int ActionCountDefault = 3;
+    public const int CardsCount = 4;
     public event Action<GameState> NewTurn;
     public event Action<GameState> ActionPointUsed; 
 
@@ -46,6 +47,11 @@ namespace Assets.Model
       {
         var action = GameState.Maze.GetAction();
         ApplyMazeAction(action);
+      }
+
+      if (GameState.CurrentPlayer.Cards.Count < CardsCount)
+      {
+        GameState.CurrentPlayer.Cards.AddRange(CardDeck.GetCards(CardsCount - GameState.CurrentPlayer.Cards.Count));
       }
 
       //var playerHero = GameState.Heroes.First(h => h.OwnerId == GameState.CurrentPlayer.Id);
@@ -102,33 +108,84 @@ namespace Assets.Model
       }
     }
 
+    public void ActivateCard(Card card)
+    {
+      GameState.CurrentPlayer.Cards.ForEach(c=>c.IsActive = false);
+      card.IsActive = true;
+      if(card.Type == CardType.Defence)
+        HealWithCard(card);
+    }
+
+    public void DeactivateCard(Card card)
+    {
+      GameState.CurrentPlayer.Cards.ForEach(c => c.IsActive = false);
+    }
+
     public void AttackHero(Hero heroToAttack)
     {
       var curentPlayer = GameState.CurrentPlayer;
-      if (curentPlayer.Slot == null || curentPlayer.Slot.Weapon == null)
-        return;
-      var damage = curentPlayer.Slot.Weapon.Damage;
 
       if (!GameState.Maze.CanSee(GameState.CurrentHero.CurrentPositionInMaze, heroToAttack.CurrentPositionInMaze))
         return;
 
-      heroToAttack.HitPoints -= damage;
-      curentPlayer.Slot = null;
-      if (heroToAttack.HitPoints <= 0)
+      if (curentPlayer.ActiveCard != null)
       {
-        var playerOwner = GameState.Players[heroToAttack.OwnerId.Value];
+        AttackHeroWithCard(heroToAttack, curentPlayer.ActiveCard);
+      }
+      else
+      {
+        if (curentPlayer.Slot == null || curentPlayer.Slot.Weapon == null)
+          return;
+
+        var damage = curentPlayer.Slot.Weapon.Damage;
+        curentPlayer.Slot = null;
+        ApplyDamage(heroToAttack, damage);
+      }
+    }
+
+    public void AttackHeroWithCard(Hero heroToAttack, Card card)
+    {
+      if(card.Type != CardType.Attack)
+        return;
+
+      var damage = card.Power;
+
+      GameState.CurrentPlayer.Cards.Remove(card);
+      ApplyDamage(heroToAttack, damage);
+    }
+
+    public void HealWithCard(Card card)
+    {
+      if(GameState.CurrentHero.HitPoints == 50)
+        return;
+
+      GameState.CurrentPlayer.Cards.Remove(card);
+      ApplyHealing(GameState.CurrentHero, card.Power);
+    }
+
+    public void ApplyHealing(Hero hero, int healing)
+    {
+      hero.HitPoints = Math.Min(hero.HitPoints + healing, 50);
+    }
+
+    public void ApplyDamage(Hero hero, int damage)
+    {
+      hero.HitPoints -= damage;
+
+      if (hero.HitPoints <= 0)
+      {
+        var playerOwner = GameState.Players[hero.OwnerId.Value];
         if (playerOwner.Slot != null && playerOwner.Slot.Anh != null)
         {
-          heroToAttack.HitPoints = playerOwner.Slot.Anh.HealingPower;
+          hero.HitPoints = playerOwner.Slot.Anh.HealingPower;
           playerOwner.Slot = null;
         }
         else
         {
           playerOwner.IsDead = true;
-          heroToAttack.Die();
+          hero.Die();
         }
       }
-
     }
 
     public ChestOpeningResult OpenChest()

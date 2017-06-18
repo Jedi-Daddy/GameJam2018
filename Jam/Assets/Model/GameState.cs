@@ -34,6 +34,11 @@ namespace Assets.Model
     public int ActionPoints;
     public List<Card> Cards;
     public ItemSlot Slot;
+
+    public Card ActiveCard
+    {
+      get { return Cards.FirstOrDefault(c => c.IsActive); }
+    }
   }
 
   public class ItemSlot
@@ -54,6 +59,26 @@ namespace Assets.Model
 
   public class Card
   {
-    //todo
+    public CardType Type;
+    public int Power;
+
+    public Card()
+    {
+      
+    }
+
+    public Card(Card card)
+    {
+      Type = card.Type;
+      Power = card.Power;
+    }
+    
+    public bool IsActive { get; set; }
+  }
+
+  public enum CardType
+  {
+    Attack = 0,
+    Defence = 1,
   }
 }

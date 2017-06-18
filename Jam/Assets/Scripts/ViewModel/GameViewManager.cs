@@ -12,6 +12,7 @@ namespace Assets.Scripts.ViewModel
 
     public HeroInfoView CurrentHeroInfo;
     public HeroInfoView[] HeroesInfo;
+    public RectTransform CardHolder;
 
     public Text TimerText;
 
@@ -49,6 +50,21 @@ namespace Assets.Scripts.ViewModel
           HeroesInfo[j].UpdateHero(state.MaxHitPoints, state.CurrentPlayer, hero);
           j++;
         }
+      }
+
+      //var cardButtons = CardHolder.GetComponentInChildren<CardListener>();
+      if (CardHolder.childCount > 0)
+        for (var i = 0; i < CardHolder.childCount; i++)
+          Destroy(CardHolder.GetChild(i).gameObject);
+
+      foreach (var card in state.CurrentPlayer.Cards)
+      {
+        var cardTemplate = card.Type == CardType.Attack
+          ? Instantiate(Resources.Load("Prefabs\\attackCardPrefab") as GameObject)
+          : Instantiate(Resources.Load("Prefabs\\defenceCard") as GameObject);
+        cardTemplate.GetComponent<CardListener>().Card = card;
+        cardTemplate.transform.SetParent(CardHolder);
+        //cardButtons.Card = card;
       }
     }
   }
