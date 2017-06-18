@@ -41,7 +41,7 @@ namespace Assets.Model.Races
           {
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Elf",
             WallPrefabLocation = "Prefabs\\MapElements\\Tile_Elf_slim_v",
-            HeroPrefabLocation ="Prefabs\\heroTest"
+            HeroPrefabLocation ="Prefabs\\Hero"
           }
         },
         {
@@ -49,7 +49,7 @@ namespace Assets.Model.Races
           {
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Orc",
             WallPrefabLocation = "Prefabs\\MapElements\\Tile_Orc_slim_v",
-            HeroPrefabLocation ="Prefabs\\heroTest"
+            HeroPrefabLocation ="Prefabs\\Hero"
           }
         },
         {
@@ -57,7 +57,7 @@ namespace Assets.Model.Races
           {
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Ent",
             WallPrefabLocation = "Prefabs\\MapElements\\Tile_Ent_slim_v",
-            HeroPrefabLocation ="Prefabs\\heroTest"
+            HeroPrefabLocation ="Prefabs\\Hero"
           }
         },
         {
