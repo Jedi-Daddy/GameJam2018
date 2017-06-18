@@ -3,6 +3,7 @@ using Assets.Model.Maze;
 using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Model.Races;
+using Assets.Scripts.ViewModel;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -109,7 +110,7 @@ namespace Assets.Scripts
               : Resources.Load("Prefabs\\MapElements\\Wall_long");
             var newWallObject = GameObject.Instantiate(template) as GameObject;
             newWallObject.transform.SetParent(segmentObject.transform);
-            newWallObject.transform.eulerAngles = new Vector3(0,0,90f);
+            newWallObject.transform.eulerAngles = new Vector3(0, 0, 90f);
             //var rect = newWallObject.GetComponent<RectTransform>();
             //rect.sizeDelta = new Vector3(CellSize, WallWidth);
             newWallObject.transform.localPosition = new Vector3(x, -y);
@@ -125,6 +126,8 @@ namespace Assets.Scripts
       heroObject.transform.SetParent(fieldContainer.transform);
       var heroMover = heroObject.AddComponent<HeroMovementListener>();
       var heroClicker = heroObject.GetComponent<HeroClickListener>();
+      var heroViewer = heroObject.GetComponent<HeroInfoView>();
+      heroViewer.SetAvatar(hero.Race);
       heroClicker.Hero = hero;
       hero.OnMove += heroMover.Move;
       hero.OnDie += heroMover.Die;
