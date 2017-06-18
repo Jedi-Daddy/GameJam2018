@@ -89,6 +89,7 @@ namespace Assets.Model
       if (chest != null && chest.OwnerId!= GameState.CurrentPlayer.Id) 
       {
         var openChestResult = chest.OpenChest();
+        GameState.Chests.Remove(chest);
         if (openChestResult.Rubys > 0)
           GameState.CurrentPlayer.RubyAmmount += openChestResult.Rubys;
         if(openChestResult.Weapon != null)
@@ -96,6 +97,7 @@ namespace Assets.Model
         if (openChestResult.Anh != null)
           GameState.CurrentPlayer.Slot = new ItemSlot(openChestResult.Anh);
       }
+
 
       heroToMove.Move(positionToMove);
       OnAction();
@@ -158,6 +160,8 @@ namespace Assets.Model
         ApplyDamage(heroToAttack, damage);
       }
       OnAction();
+      if(GameState.CurrentPlayer.ActionPoints == 0)
+        StartNewTurn();
     }
 
     public void AttackHeroWithCard(Hero heroToAttack, Card card)

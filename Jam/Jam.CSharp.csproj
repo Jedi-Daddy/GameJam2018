@@ -112,6 +112,7 @@
     <Compile Include="Assets\Scripts\CardListener.cs" />
     <Compile Include="Assets\Scripts\ChestTakingListener.cs" />
     <Compile Include="Assets\Scripts\CoordsUtility.cs" />
+    <Compile Include="Assets\Scripts\ExitScript.cs" />
     <Compile Include="Assets\Scripts\GameFieldDrawer.cs" />
     <Compile Include="Assets\Scripts\HeroClickListener.cs" />
     <Compile Include="Assets\Scripts\HeroHelper.cs" />

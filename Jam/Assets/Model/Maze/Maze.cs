@@ -100,15 +100,38 @@ namespace Assets.Model.Maze
       {
         if(!isToLeftGate)
           return false;
-        if (((to.SegmentId - from.SegmentId) != 1 && !(!onSameColumn && !onSameRow)))
-          return false;
+
+        var neighbourSegment = (to.SegmentId - from.SegmentId) == 1;
+
+        if (!neighbourSegment)
+        {
+          var isDiagonal = (!onSameColumn && !onSameRow);
+          if(!isDiagonal)
+            return false;
+
+          if (isDiagonal && (from.SegmentId == 0 && from.CoordsInSegment.X != 0))
+            return false;
+
+          if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
+            return false;
+          if (isDiagonal && (from.SegmentId == 2 && from.CoordsInSegment.X == mazeSide -1))
+            return false;
+        }
+        //)}
+        //  return false;
+
       }
 
       if (isFromLeftGate)
       {
         if(!isToRightGate)
           return false;
-        if (((from.SegmentId - to.SegmentId) != 1 && !(!onSameColumn && !onSameRow)))
+
+        var isDiagonal = (!onSameColumn && !onSameRow); 
+        if (((from.SegmentId - to.SegmentId) != 1) && (!isDiagonal || from.SegmentId == 1))
+          return false;
+
+        if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
           return false;
       }
 
