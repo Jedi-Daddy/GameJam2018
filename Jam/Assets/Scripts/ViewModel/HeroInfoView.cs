@@ -12,6 +12,7 @@ namespace Assets.Scripts.ViewModel
     public Slider HpProgressBarSlider;
     public Text HpCountText;
     public Text EnergyPointsText;
+    public Image ActiveFrameImage;
     
     public void UpdateHero(int maxHp, Player player, Hero hero)
     {
@@ -52,6 +53,11 @@ namespace Assets.Scripts.ViewModel
       var avatarObj = Resources.Load<GameObject>(HeroHelper.GetAvatarName(race));
 
       Object.Instantiate(avatarObj, AvatarParent);
+    }
+
+    public void SetActiveFrame(bool isActive)
+    {
+      ActiveFrameImage.enabled = isActive;
     }
   }
 }
