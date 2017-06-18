@@ -1,28 +1,24 @@
-﻿using System;
-using System.Text;
-using Assets.Model;
+﻿using Assets.Model;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.ViewModel
 {
   public class GameViewManager : MonoBehaviour
   {
+    private GameState _currentState;
+    
     public RectTransform FieldContainer;
 
     public HeroInfoView CurrentHeroInfo;
     public HeroInfoView[] HeroesInfo;
     public RectTransform CardHolder;
-    public Text GameLogText;
-
-    private StringBuilder _messageSb;
 
     public Text TimerText;
 
     public void Initialize(GameState state)
     {
-      _messageSb = new StringBuilder();
-
       GameFieldDrawer.DrawField(FieldContainer, state.Maze);
       var heroes = state.Heroes;
 
@@ -44,6 +40,47 @@ namespace Assets.Scripts.ViewModel
 
     public void SetState(GameState state)
     {
+      if(state.IsWin)
+        SceneManager.LoadScene(0);
+
+      if (state.SegmentToRebuild.HasValue)
+      {
+        if (FieldContainer.childCount > 0)
+          for (var i = 0; i < FieldContainer.childCount; i++)
+            Destroy(FieldContainer.GetChild(i).gameObject);
+        GameFieldDrawer.DrawField(FieldContainer, state.Maze);
+        
+        foreach (var chest in state.Chests)
+        {
+          GameFieldDrawer.DrawChest(FieldContainer, chest);
+        }
+
+        for (int i = 0; i <  state.Heroes.Count; i++)
+        {
+          var hero = state.Heroes[i];
+
+          if (hero.HitPoints > 0)
+            GameFieldDrawer.DrawHero(FieldContainer, hero);
+        }
+        
+        state.SegmentToRebuild = null;
+      }
+
+      var children = FieldContainer.GetComponentsInChildren<Passible>();
+      foreach (var child in children)
+      {
+        Destroy(child.gameObject);
+      }
+
+      foreach (var passibleCell in state.PassibleCells)
+      {
+        var cell = Instantiate(Resources.Load("Prefabs\\passableCell")) as GameObject;
+        cell.transform.SetParent(FieldContainer.transform);
+        cell.transform.localPosition = CoordsUtility.GetUiPosition(passibleCell);
+      }
+
+      _currentState = state;
+
       CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);
       var heroes = state.Heroes;
       for (int i = 0, j = 0; i < heroes.Count;i++)
@@ -78,16 +115,6 @@ namespace Assets.Scripts.ViewModel
           sepObj.transform.localPosition = Vector3.zero;
         }
       }
-    }
-
-    public void ShowMessage(string message)
-    {
-      if (GameLogText == null || _messageSb == null)
-        return;
-
-      _messageSb.Append("<color=#008000ff> > </color>").AppendLine(message);
-
-      GameLogText.text = _messageSb.ToString();
     }
   }
 }

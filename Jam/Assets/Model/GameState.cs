@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Maze;
 using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
 
@@ -13,16 +14,28 @@ namespace Assets.Model
     public List<Player> Players;
     public List<Hero> Heroes;
     public List<Chest> Chests;
+    public int? SegmentToRebuild;
 
     public Player CurrentPlayer
     {
       get { return Players[Turn%Players.Count]; }
     }
 
+    public bool IsWin
+    {
+      get { return Players.Count(p => !p.IsDead) == 1; }
+
+    }
+
     public Hero CurrentHero
     {
       get { return Heroes.First(h => h.OwnerId == CurrentPlayer.Id); }
     }
+
+    public List<LocationInMaze> PassibleCells
+    {
+      get { return Maze.GetPassableCells(CurrentHero.CurrentPositionInMaze, Turn).PassibleCells; }
+    } 
 
     public bool TurnForMazeAction { get { return Turn % Players.Count(p => !p.IsDead) == 0; } }
   }

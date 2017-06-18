@@ -9,6 +9,12 @@ namespace Assets.Model.Maze.MazeObjects
     public event Action<LocationInMaze> OnMove;
     public event Action OnDie;
 
+    public void RemoveEvents()
+    {
+      OnMove = null;
+      OnDie = null;
+    }
+
     public void Move(LocationInMaze positionToMove)
     {
       if (OnMove != null)
@@ -18,8 +24,11 @@ namespace Assets.Model.Maze.MazeObjects
 
     public void Die()
     {
-      if (OnDie != null)
-        OnDie();
+      OnMove = null;
+      var onDieActions = OnDie;
+      OnDie = null;
+      if (onDieActions != null)
+        onDieActions();
     }
   }
 }

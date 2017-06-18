@@ -158,7 +158,7 @@ namespace Assets.Model.Maze
 
     public MazeActionType GetAction()
     {
-      return MazeActionType.Nothing;
+      return MazeActionType.Rebuild;
       var rand = new Random();
       if (rand.NextDouble() < 0.5)
         return MazeActionType.Lock;

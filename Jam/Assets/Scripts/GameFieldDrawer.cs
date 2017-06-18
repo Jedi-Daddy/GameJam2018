@@ -129,6 +129,7 @@ namespace Assets.Scripts
       var heroViewer = heroObject.GetComponent<HeroInfoView>();
       heroViewer.SetAvatar(hero.Race);
       heroClicker.Hero = hero;
+      hero.RemoveEvents();
       hero.OnMove += heroMover.Move;
       hero.OnDie += heroMover.Die;
       heroObject.transform.localPosition = CoordsUtility.GetUiPosition(hero.CurrentPositionInMaze);
@@ -139,6 +140,8 @@ namespace Assets.Scripts
       var chestObject = GameObject.Instantiate(Resources.Load(RaceManager.GetChestPrefabLocation(chest.ChestResultType))) as GameObject;
       chestObject.transform.SetParent(fieldContainer.transform);
       var chestRemover = chestObject.AddComponent<ChestTakingListener>();
+      chestRemover.Chest = chest;
+      chest.RemoveEvents();
       chest.Take += chestRemover.Delete;
       chestObject.transform.localPosition = CoordsUtility.GetUiPosition(chest.CurrentPositionInMaze);
     }
