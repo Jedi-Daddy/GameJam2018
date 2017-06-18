@@ -1,5 +1,6 @@
 ﻿using Assets.Model;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.ViewModel
@@ -39,12 +40,14 @@ namespace Assets.Scripts.ViewModel
 
     public void SetState(GameState state)
     {
+      if(state.IsWin)
+        SceneManager.LoadScene(0);
+
       if (state.SegmentToRebuild.HasValue)
       {
         if (FieldContainer.childCount > 0)
           for (var i = 0; i < FieldContainer.childCount; i++)
             Destroy(FieldContainer.GetChild(i).gameObject);
-
         GameFieldDrawer.DrawField(FieldContainer, state.Maze);
         
         foreach (var chest in state.Chests)
@@ -59,8 +62,21 @@ namespace Assets.Scripts.ViewModel
           if (hero.HitPoints > 0)
             GameFieldDrawer.DrawHero(FieldContainer, hero);
         }
-
+        
         state.SegmentToRebuild = null;
+      }
+
+      var children = FieldContainer.GetComponentsInChildren<Passible>();
+      foreach (var child in children)
+      {
+        Destroy(child.gameObject);
+      }
+
+      foreach (var passibleCell in state.PassibleCells)
+      {
+        var cell = Instantiate(Resources.Load("Prefabs\\passableCell")) as GameObject;
+        cell.transform.SetParent(FieldContainer.transform);
+        cell.transform.localPosition = CoordsUtility.GetUiPosition(passibleCell);
       }
 
       _currentState = state;

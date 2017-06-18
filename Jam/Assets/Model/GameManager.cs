@@ -84,7 +84,6 @@ namespace Assets.Model
         if(mo as Chest != null)
           chests.Add((Chest)mo);
       }
-        
 
       var chest = chests.FirstOrDefault();
       if (chest != null && chest.OwnerId!= GameState.CurrentPlayer.Id) 
@@ -158,6 +157,7 @@ namespace Assets.Model
         curentPlayer.Slot = null;
         ApplyDamage(heroToAttack, damage);
       }
+      OnAction();
     }
 
     public void AttackHeroWithCard(Hero heroToAttack, Card card)
@@ -178,6 +178,7 @@ namespace Assets.Model
 
       GameState.CurrentPlayer.Cards.Remove(card);
       ApplyHealing(GameState.CurrentHero, card.Power);
+      OnAction();
     }
 
     public void ApplyHealing(Hero hero, int healing)
