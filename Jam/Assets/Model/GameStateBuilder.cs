@@ -21,12 +21,14 @@ namespace Assets.Model
         Players = new List<Player>()
       };
       var chestsPlacer = new ChestsPlacer();
+      gameState.MaxHitPoints = 50;
       for (var i = 0; i < playersCount; i++)
       {
         gameState.Players.Add(new Player { Id = i });
         gameState.Heroes.Add(new Hero
         {
           OwnerId = i,
+          HitPoints = gameState.MaxHitPoints,
           Race = (Race)i,
           CurrentPositionInMaze = new LocationInMaze
           {

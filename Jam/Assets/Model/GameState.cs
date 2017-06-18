@@ -8,6 +8,7 @@ namespace Assets.Model
   public class GameState
   {
     public int Turn;
+    public int MaxHitPoints;
     public Maze.Maze Maze;
     public List<Player> Players;
     public List<Hero> Heroes;
