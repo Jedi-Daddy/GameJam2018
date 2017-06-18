@@ -13,6 +13,7 @@ namespace Assets.Model
     public List<Player> Players;
     public List<Hero> Heroes;
     public List<Chest> Chests;
+    public int? SegmentToRebuild;
 
     public Player CurrentPlayer
     {

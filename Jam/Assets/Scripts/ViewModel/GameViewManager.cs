@@ -39,6 +39,30 @@ namespace Assets.Scripts.ViewModel
 
     public void SetState(GameState state)
     {
+      if (state.SegmentToRebuild.HasValue)
+      {
+        if (FieldContainer.childCount > 0)
+          for (var i = 0; i < FieldContainer.childCount; i++)
+            Destroy(FieldContainer.GetChild(i).gameObject);
+
+        GameFieldDrawer.DrawField(FieldContainer, state.Maze);
+        
+        foreach (var chest in state.Chests)
+        {
+          GameFieldDrawer.DrawChest(FieldContainer, chest);
+        }
+
+        for (int i = 0; i <  state.Heroes.Count; i++)
+        {
+          var hero = state.Heroes[i];
+
+          if (hero.HitPoints > 0)
+            GameFieldDrawer.DrawHero(FieldContainer, hero);
+        }
+
+        state.SegmentToRebuild = null;
+      }
+
       _currentState = state;
 
       CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);

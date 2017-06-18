@@ -26,7 +26,8 @@ namespace Assets.Model
     private static readonly List<IMazeActionApplier> ActionAppliers = new List<IMazeActionApplier>
     {
       new BlockMazeActionApplier(),
-      new TeleportMazeActionApplier()
+      new TeleportMazeActionApplier(),
+      new RebuildMazeSegmentActionApplier(),
     };
 
     public void StartNewGame()
@@ -211,6 +212,22 @@ namespace Assets.Model
     //  var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
     //  return chest.OpenChest();
     //}
+  }
+
+  internal class RebuildMazeSegmentActionApplier : IMazeActionApplier
+  {
+    public void ApplyAction(GameState state, MazeActionType actionType)
+    {
+      if (actionType != MazeActionType.Rebuild)
+        return;
+      var random = new Random();
+      var segmentId = random.Next(0, state.Maze.Segments.Count);
+      var mazeSegment = state.Maze.Segments[segmentId];
+      state.Maze.Segments.Remove(mazeSegment);
+      var newSegment = MazeBuilder.BuildSegment(segmentId);
+      state.Maze.Segments.Insert(segmentId, newSegment);
+      state.SegmentToRebuild = segmentId;
+    }
   }
 
   internal class TeleportMazeActionApplier : IMazeActionApplier
