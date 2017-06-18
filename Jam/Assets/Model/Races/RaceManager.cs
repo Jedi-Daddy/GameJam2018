@@ -19,7 +19,29 @@ namespace Assets.Model.Races
             CellPrefabLocation = "Prefabs\\MapElements\\Tile_Elf",
             WallPrefabLocation = "Prefabs\\MapElements\\Tile_Elf_slim_v"
           }
-        }
+        },
+		{
+			Race.Orc, new RaceInfo
+			{
+				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Orc",
+				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Orc_slim_v"
+			}
+		},
+		{
+			Race.Ent, new RaceInfo
+			{
+				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Ent",
+				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Ent_slim_v"
+			}
+		},
+		{
+			Race.Vampire, new RaceInfo
+			{
+				CellPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp",
+				WallPrefabLocation = "Prefabs\\MapElements\\Tile_Vamp_slim_v"
+			}
+		}
+
       };
     }
 
