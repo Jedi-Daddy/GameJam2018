@@ -116,8 +116,7 @@ namespace Assets.Model
 
       heroToMove.Move(positionToMove);
       OnAction();
-      if(curentPlayer.ActionPoints == 0)
-        StartNewTurn();
+     
       //var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
       //if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
       //  return;
@@ -129,6 +128,8 @@ namespace Assets.Model
       GameState.CurrentPlayer.ActionPoints--;
       if (ActionPointUsed != null)
         ActionPointUsed(GameState);
+      if (GameState.CurrentPlayer.ActionPoints == 0)
+        StartNewTurn();
     }
 
     public void ClickHero(Hero hero)
@@ -163,8 +164,9 @@ namespace Assets.Model
 
       if (curentPlayer.ActiveCard != null)
       {
-        AttackHeroWithCard(heroToAttack, curentPlayer.ActiveCard);
-        GameState.Message = string.Format("BOOM!! Here goes some CARD damage {0}. This damage is different because u used card.", curentPlayer.ActiveCard.Power);
+        var activaCard = curentPlayer.ActiveCard;
+        AttackHeroWithCard(heroToAttack, activaCard);
+        GameState.Message = string.Format("BOOM!! Here goes some CARD damage {0}. This damage is different because u used card.", activaCard.Power);
       }
       else
       {
@@ -176,9 +178,6 @@ namespace Assets.Model
         ApplyDamage(heroToAttack, damage);
         GameState.Message = string.Format("BOOM!! Here goes some damage {0}", damage);
       }
-      OnAction();
-      if(GameState.CurrentPlayer.ActionPoints == 0)
-        StartNewTurn();
     }
 
     public void AttackHeroWithCard(Hero heroToAttack, Card card)
@@ -225,6 +224,7 @@ namespace Assets.Model
           hero.Die();
         }
       }
+      OnAction();
     }
 
     //public ChestOpeningResult OpenChest()
