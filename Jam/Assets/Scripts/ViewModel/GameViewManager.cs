@@ -130,7 +130,7 @@ namespace Assets.Scripts.ViewModel
       if (GameLogText == null || _messageSb == null)
         return;
 
-      _messageSb.Append("<color=#008000ff> > </color>").AppendLine(message);
+      _messageSb.Insert(0, "<color=#008000ff> > </color>" + message + "\n");
 
       GameLogText.text = _messageSb.ToString();
     }

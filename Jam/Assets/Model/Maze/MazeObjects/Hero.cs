@@ -5,6 +5,7 @@ namespace Assets.Model.Maze.MazeObjects
   public class Hero : MazeObject
   {
     public Race Race;
+    public string Name;
     public int HitPoints;
     public event Action<LocationInMaze> OnMove;
     public event Action OnDie;

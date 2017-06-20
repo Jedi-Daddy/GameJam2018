@@ -6,7 +6,7 @@ namespace Assets.Model.Maze.MazeObjects.Chest
   {
     public ChestOpeningResultType ChestResultType;
     public event Action Take;
-
+    
     public void RemoveEvents()
     {
       Take = null;

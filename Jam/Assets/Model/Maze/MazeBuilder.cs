@@ -20,24 +20,24 @@ namespace Assets.Model.Maze
       }
     }
 
-    public static Maze BuildNew(int playersCount)
+    public static Maze BuildNew(List<Player> players)
     {
-      var result = new Maze(playersCount) { Segments = new List<MazeSegment>(playersCount) };
-      for (int i = 0; i < playersCount; i++)
+      var result = new Maze(players.Count) { Segments = new List<MazeSegment>(players.Count) };
+      for (int i = 0; i < players.Count; i++)
       {
-        result.Segments.Add(BuildSegment(i));
+        result.Segments.Add(BuildSegment(players[i]));
       }
       return result;
     }
 
-    public static MazeSegment BuildSegment(int playerId)
+    public static MazeSegment BuildSegment(Player player)
     {
       var template = _segmentTemplates[_random.Next(0, _segmentTemplates.Count)];
       var newtemplate = template.Clone();
       newtemplate.SegmentSpecial = new SegmentSpecial
       {
         SegmentEffects = new List<MazeSegmentEffect>(),
-        RaceType = (Race)playerId
+        RaceType = player.PlayerRace
       };
 
       return newtemplate;

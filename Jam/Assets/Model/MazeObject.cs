@@ -7,5 +7,6 @@ namespace Assets.Model
   {
     public int? OwnerId;
     public LocationInMaze CurrentPositionInMaze;
+    public bool IsPassable;
   }
 }

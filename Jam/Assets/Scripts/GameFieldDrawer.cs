@@ -45,12 +45,6 @@ namespace Assets.Scripts
       var segmentObject = new GameObject();
 
       var segmentSideLength = Math.Sqrt(segment.Matrix.GetLength(0));//5
-      //for (int i = 0; i < UPPER; i++)
-      //{
-        
-      //}
-
-
       for (int columnNumber = 0; columnNumber < segmentSideLength * 2 - 1; columnNumber++)
       {
         var cellX = columnNumber/2;

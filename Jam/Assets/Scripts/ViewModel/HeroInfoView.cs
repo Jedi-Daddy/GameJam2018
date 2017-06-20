@@ -33,15 +33,15 @@ namespace Assets.Scripts.ViewModel
       SetEnergyPointsCount(player.ActionPoints);
       SetAvatar(hero.Race);
       SetWeaponIcon(player.Slot);
-      SetNick(hero.Race);
+      SetNick(hero);
     }
 
-    public void SetNick(Race race)
+    public void SetNick(Hero hero)
     {
       if (Nickname == null)
         return;
 
-      Nickname.text = Nicks[race];
+      Nickname.text = hero.Name; //Nicks[race];
     }
 
     public void SetHpValue(int currentHp)

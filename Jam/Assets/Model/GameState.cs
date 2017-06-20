@@ -49,6 +49,8 @@ namespace Assets.Model
     public List<Card> Cards;
     public ItemSlot Slot;
     public int RubyAmmount;
+    public Race PlayerRace;
+    public string HeroName;
 
     public Card ActiveCard
     {

@@ -10,33 +10,33 @@ namespace Assets.Model
 {
   class GameStateBuilder
   {
-    public static GameState BuildNewGameState(int playersCount)
+    public static GameState BuildNewGameState(List<Player> players)
     {
       var gameState = new GameState
       {
         Turn = -1,
-        Maze = MazeBuilder.BuildNew(playersCount),
         Heroes = new List<Hero>(),
         Chests = new List<Chest>(),
         Players = new List<Player>()
       };
+
       var chestsPlacer = new ChestsPlacer();
       gameState.MaxHitPoints = 50;
-      for (var i = 0; i < playersCount; i++)
+      for (var i = 0; i < players.Count; i++)
       {
+        var currentPlayer = players[i];
+        currentPlayer.Id = i;
         var cards = new List<Card>();
         CardDeck.TryAddCards(cards);
-        gameState.Players.Add(new Player
-        {
-          Id = i ,
-          Cards = cards
-        });
+        players[i].Cards = cards;
+        gameState.Players.Add(players[i]);
 
         gameState.Heroes.Add(new Hero
         {
           OwnerId = i,
           HitPoints = gameState.MaxHitPoints,
-          Race = (Race)i,
+          Race = currentPlayer.PlayerRace,
+          Name = currentPlayer.HeroName,
           CurrentPositionInMaze = new LocationInMaze
           {
             SegmentId = i,
@@ -45,6 +45,9 @@ namespace Assets.Model
         });
         gameState.Chests.AddRange(chestsPlacer.GetChestForSegment(i));
       }
+
+      gameState.Maze = MazeBuilder.BuildNew(players);
+      
       foreach (var hero in gameState.Heroes)
       {
         gameState.Maze.AddMazeObject(hero);
@@ -62,10 +65,10 @@ namespace Assets.Model
     {
       private static readonly List<Chest> ChestsToPlace = new List<Chest>
       {
-        new AnhChest {Anh = new Anh {HealingPower = 50}, ChestResultType = ChestOpeningResultType.Anh},
-        new AnhChest {Anh = new Anh {HealingPower = 25}, ChestResultType = ChestOpeningResultType.Anh},
-        new WeaponChest {Weapon = new Weapon {Damage = 40},ChestResultType = ChestOpeningResultType.Weapon},
-        new WeaponChest {Weapon = new Weapon {Damage = 20},ChestResultType = ChestOpeningResultType.Weapon},
+        new AnhChest {Anh = new Anh {HealingPower = 50}, ChestResultType = ChestOpeningResultType.Anh, IsPassable = true},
+        new AnhChest {Anh = new Anh {HealingPower = 25}, ChestResultType = ChestOpeningResultType.Anh, IsPassable = true},
+        new WeaponChest {Weapon = new Weapon {Damage = 40},ChestResultType = ChestOpeningResultType.Weapon, IsPassable = true},
+        new WeaponChest {Weapon = new Weapon {Damage = 20},ChestResultType = ChestOpeningResultType.Weapon, IsPassable = true},
       };
 
       private readonly List<Chest> _chestsLeftToPlace;
@@ -97,7 +100,8 @@ namespace Assets.Model
               CoordsInSegment = chestLocations[0]
             },
             OwnerId = ownerId,
-            RubyAmount = 1
+            RubyAmount = 1,
+            IsPassable = true
           }
         };
         var battleChest = _chestsLeftToPlace[_chestRandom.Next(0, _chestsLeftToPlace.Count)];

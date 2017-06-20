@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts;
 
 namespace Assets.Model.Maze
 {
@@ -59,6 +58,10 @@ namespace Assets.Model.Maze
     public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
     {
       if(from.Equals(to))
+        return false;
+
+      var objectsOnCell = GetObjects(to);
+      if(objectsOnCell != null && objectsOnCell.Any(o=>!o.IsPassable))
         return false;
 
       if (from.SegmentId == to.SegmentId)
@@ -178,6 +181,8 @@ namespace Assets.Model.Maze
       }
       return true;
     }
+
+
     private static readonly Dictionary<MazeActionType, double> ActionsByProbability = new Dictionary
      <MazeActionType, double>
     {
@@ -227,21 +232,15 @@ namespace Assets.Model.Maze
 
       return result;
     }
-    //public MazeActionType GetAction()
-    //{
-    //  return MazeActionType.Rebuild;
-    //  var rand = new Random();
-    //  if (rand.NextDouble() < 0.5)
-    //    return MazeActionType.Lock;
-    //  else
-    //  {
-    //    return MazeActionType.Teleport;
-    //  }
-    //}
-
+   
     public List<MazeObject> GetObjects(LocationInMaze currentPositionInMaze)
     {
       return MazeObjects.Where(mo => mo.CurrentPositionInMaze.Equals(currentPositionInMaze)).ToList();
+    }
+
+    public void RemoveObject(MazeObject objectToRemove)
+    {
+      MazeObjects.Remove(objectToRemove);
     }
 
     public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze heroPosition)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Model.Maze;
+using Assets.Model.Maze.Actions;
 using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
 using Assets.Scripts;
@@ -30,18 +31,17 @@ namespace Assets.Model
       new RebuildMazeSegmentActionApplier(),
     };
 
-    public void StartNewGame()
+    public void StartNewGame(List<Player> players)
     {
-      GameState = GameStateBuilder.BuildNewGameState(PlayersCount);
+      GameState = GameStateBuilder.BuildNewGameState(players);
       StartNewTurn();
-      //return GameState;
     }
 
     public void StartNewTurn()
     {
       ++GameState.Turn;
       if (GameState.CurrentPlayer.IsDead)
-        ++GameState.Turn;
+        StartNewTurn();
 
       GameState.CurrentPlayer.ActionPoints = ActionCountDefault;
       if (GameState.TurnForMazeAction)
@@ -57,10 +57,6 @@ namespace Assets.Model
       }
 
       CardDeck.TryAddCards(GameState.CurrentPlayer.Cards);
-
-      //var playerHero = GameState.Heroes.First(h => h.OwnerId == GameState.CurrentPlayer.Id);
-      //startTurnResult.PlayerHero = playerHero;
-      //startTurnResult.WhereHeroCanMove = GameState.Maze.GetPassableCells(playerHero.CurrentPositionInMaze, GameState.Turn);
       NewTurn(GameState);
     }
 
@@ -89,10 +85,11 @@ namespace Assets.Model
       }
 
       var chest = chests.FirstOrDefault();
-      if (chest != null && chest.OwnerId!= GameState.CurrentPlayer.Id) 
+      if (chest != null && chest.OwnerId != GameState.CurrentPlayer.Id) 
       {
         var openChestResult = chest.OpenChest();
         GameState.Chests.Remove(chest);
+        GameState.Maze.RemoveObject(chest);
         if (openChestResult.Rubys > 0)
         {
           GameState.CurrentPlayer.RubyAmmount += openChestResult.Rubys;
@@ -109,7 +106,6 @@ namespace Assets.Model
           GameState.Message = "Now you are immortal!!! Well no but something like that";
         }
       }
-
 
       heroToMove.Move(positionToMove);
       OnAction();
@@ -163,7 +159,6 @@ namespace Assets.Model
       {
         var activaCard = curentPlayer.ActiveCard;
         AttackHeroWithCard(heroToAttack, activaCard);
-        GameState.Message = string.Format("BOOM!! Here goes some CARD damage {0}. This damage is different because u used card.", activaCard.Power);
       }
       else
       {
@@ -172,8 +167,9 @@ namespace Assets.Model
 
         var damage = curentPlayer.Slot.Weapon.Damage;
         curentPlayer.Slot = null;
-        ApplyDamage(heroToAttack, damage);
         GameState.Message = string.Format("BOOM!! Here goes some damage {0}", damage);
+        ApplyDamage(heroToAttack, damage);
+        OnAction();
       }
     }
 
@@ -186,6 +182,8 @@ namespace Assets.Model
 
       GameState.CurrentPlayer.Cards.Remove(card);
       ApplyDamage(heroToAttack, damage);
+      GameState.Message = string.Format("BOOM!! Here goes some CARD damage {0}. This damage is different because u used card.", card.Power);
+      OnAction();
     }
 
     public void HealWithCard(Card card)
@@ -219,66 +217,9 @@ namespace Assets.Model
         {
           playerOwner.IsDead = true;
           hero.Die();
+          hero.IsPassable = true;
         }
       }
-      OnAction();
-    }
-
-    //public ChestOpeningResult OpenChest()
-    //{
-    //  var curentPlayer = GameState.CurrentPlayer;
-    //  var hero = GameState.Heroes.First(h => h.OwnerId == curentPlayer.Id);
-    //  var chest = GameState.Maze.GetObjects(hero.CurrentPositionInMaze).FirstOrDefault(o => o.GetType() == typeof (Chest)) as Chest;
-    //  return chest.OpenChest();
-    //}
-  }
-
-  internal class RebuildMazeSegmentActionApplier : IMazeActionApplier
-  {
-    public void ApplyAction(GameState state, MazeActionType actionType)
-    {
-      if (actionType != MazeActionType.Rebuild)
-        return;
-      var random = new Random();
-      var segmentId = random.Next(0, state.Maze.Segments.Count);
-      var mazeSegment = state.Maze.Segments[segmentId];
-      state.Maze.Segments.Remove(mazeSegment);
-      var newSegment = MazeBuilder.BuildSegment(segmentId);
-      state.Maze.Segments.Insert(segmentId, newSegment);
-      state.SegmentToRebuild = segmentId;
-    }
-  }
-
-  internal class TeleportMazeActionApplier : IMazeActionApplier
-  {
-    public void ApplyAction(GameState state, MazeActionType actionType)
-    {
-      if(actionType != MazeActionType.Teleport)
-        return;
-      var random = new Random();
-      var locationToTeleport = new LocationInMaze
-      {
-        SegmentId = random.Next(0, state.Maze.Segments.Count),
-        CoordsInSegment = new Point(random.Next(0, 5), random.Next(0, 5)),
-      };
-      var heroVictim = state.Heroes[random.Next(0, state.Heroes.Count)];
-      heroVictim.Move(locationToTeleport);
-    }
-  }
-
-  internal class BlockMazeActionApplier : IMazeActionApplier
-  {
-    public void ApplyAction(GameState state, MazeActionType actionType)
-    {
-      if(actionType != MazeActionType.Lock)
-        return;
-
-      var random = new Random();
-      state.Maze.Segments[random.Next(0,state.Maze.Segments.Count)].SegmentSpecial.SegmentEffects.Add(new MazeSegmentEffect
-      {
-        EffectType = MazeSegmentEffectType.Blocked,
-        TurnUntil = state.Turn + 2 * state.Players.Count(p=>!p.IsDead)
-      });
     }
   }
 
