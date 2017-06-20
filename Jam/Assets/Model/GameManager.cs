@@ -56,10 +56,7 @@ namespace Assets.Model
           GameState.Message = "Where are you?";
       }
 
-      if (GameState.CurrentPlayer.Cards.Count < CardsCount)
-      {
-        GameState.CurrentPlayer.Cards.AddRange(CardDeck.GetCards(CardsCount - GameState.CurrentPlayer.Cards.Count));
-      }
+      CardDeck.TryAddCards(GameState.CurrentPlayer.Cards);
 
       //var playerHero = GameState.Heroes.First(h => h.OwnerId == GameState.CurrentPlayer.Id);
       //startTurnResult.PlayerHero = playerHero;

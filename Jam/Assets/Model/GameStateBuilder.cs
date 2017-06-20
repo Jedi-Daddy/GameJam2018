@@ -24,11 +24,14 @@ namespace Assets.Model
       gameState.MaxHitPoints = 50;
       for (var i = 0; i < playersCount; i++)
       {
+        var cards = new List<Card>();
+        CardDeck.TryAddCards(cards);
         gameState.Players.Add(new Player
         {
           Id = i ,
-          Cards = CardDeck.GetCards(4)
+          Cards = cards
         });
+
         gameState.Heroes.Add(new Hero
         {
           OwnerId = i,
