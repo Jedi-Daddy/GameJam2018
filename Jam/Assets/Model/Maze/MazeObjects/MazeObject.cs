@@ -1,7 +1,4 @@
-﻿using Assets.Model.Maze;
-using Assets.Scripts;
-
-namespace Assets.Model
+﻿namespace Assets.Model.Maze.MazeObjects
 {
   public class MazeObject
   {

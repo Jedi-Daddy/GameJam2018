@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Maze.MazeObjects;
 
 namespace Assets.Model.Maze
 {
@@ -243,12 +244,12 @@ namespace Assets.Model.Maze
       MazeObjects.Remove(objectToRemove);
     }
 
-    public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze heroPosition)
+    public bool CanSee(LocationInMaze currentPositionInMaze, LocationInMaze positionToSee)
     {
-      if (currentPositionInMaze.SegmentId != heroPosition.SegmentId)
+      if (currentPositionInMaze.SegmentId != positionToSee.SegmentId)
         return false;
 
-      if(!Segments[currentPositionInMaze.SegmentId].CanPass(currentPositionInMaze.CoordsInSegment, heroPosition.CoordsInSegment))
+      if(!Segments[currentPositionInMaze.SegmentId].CanPass(currentPositionInMaze.CoordsInSegment, positionToSee.CoordsInSegment))
         return false;
 
       return true;

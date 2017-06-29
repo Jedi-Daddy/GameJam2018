@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Assets.Model;
+using Assets.Model.Cards;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Model
+namespace Assets.Model.Maze.Actions
 {
   public class MazeActionResult
   {

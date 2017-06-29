@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Model.Maze
+namespace Assets.Model.Cards
 {
   public static class CardDeck
   {

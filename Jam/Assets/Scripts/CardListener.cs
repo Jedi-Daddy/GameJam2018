@@ -1,4 +1,5 @@
 ﻿using Assets.Model;
+using Assets.Model.Cards;
 using UnityEngine;
 using UnityEngine.UI;
 

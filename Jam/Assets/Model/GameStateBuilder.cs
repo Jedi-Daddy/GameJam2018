@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Cards;
 using Assets.Model.Maze;
 using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
-using Assets.Scripts;
 
 namespace Assets.Model
 {
@@ -81,7 +81,7 @@ namespace Assets.Model
         _chestsLeftToPlace = new List<Chest>(ChestsToPlace);
       }
 
-      public List<Chest> GetChestForSegment(int ownerId)
+      public IEnumerable<Chest> GetChestForSegment(int ownerId)
       {
         var chestLocationsSet = new HashSet<Point>();
 

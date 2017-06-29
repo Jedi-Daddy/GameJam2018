@@ -1,6 +1,4 @@
-﻿using Assets.Model.Maze.MazeObjects.Chest;
-
-namespace Assets.Model
+﻿namespace Assets.Model.Maze.MazeObjects.Chest
 {
   internal class WeaponChest : Chest
   {

@@ -1,6 +1,4 @@
-﻿using Assets.Scripts;
-
-namespace Assets.Model
+﻿namespace Assets.Model
 {
   public class PlayerAction
   {

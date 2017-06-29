@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Model.Cards;
 using Assets.Model.Maze;
 using Assets.Model.Maze.Actions;
 using Assets.Model.Maze.MazeObjects;
 using Assets.Model.Maze.MazeObjects.Chest;
-using Assets.Scripts;
 
 namespace Assets.Model
 {
