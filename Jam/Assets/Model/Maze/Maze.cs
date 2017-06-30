@@ -5,12 +5,6 @@ using Assets.Model.Maze.MazeObjects;
 
 namespace Assets.Model.Maze
 {
-  public class MazePassibleResult
-  {
-    public List<LocationInMaze> PassibleCells;
-    public List<LocationInMaze> ImpassibleCells;
-  }
-
   public class Maze
   {
     public List<MazeSegment> Segments;
@@ -27,33 +21,165 @@ namespace Assets.Model.Maze
       MazeObjects.Add(mazeObject);
     }
 
-    public MazePassibleResult GetPassableCells(LocationInMaze from, int gameTurn)
+    #region Path
+
+    public MazePassibleResult GetPassableCells(LocationInMaze from, int gameTurn, int distance)
     {
       var result = new MazePassibleResult
       {
-        PassibleCells = new List<LocationInMaze>(),
-        ImpassibleCells = new List<LocationInMaze>()
+        PassibleCells = new List<PathNode>()
       };
-
-      for (var segmentId = 0; segmentId < Segments.Count; segmentId++)
+      var cellsToCheck = new Queue<PathNode>();
+      cellsToCheck.Enqueue(new PathNode
       {
-        var currentSegment = Segments[segmentId];
-        foreach (var cellInfo in currentSegment.Cells)
+        Cell = from,
+        StepsToGet = 0
+      });
+      var cellsAlreadyChecked = new HashSet<PathNode>();
+      while (cellsToCheck.Count > 0)
+      {
+        var cellToGoFrom = cellsToCheck.Dequeue();
+        var neighbourCells = GetNeighbourCells(cellToGoFrom);
+        foreach (var neighbourCell in neighbourCells)
         {
-          var location = new LocationInMaze
+          if (neighbourCell.StepsToGet > distance)
+            break;
+
+          if (CanPass(cellToGoFrom.Cell, neighbourCell.Cell, gameTurn))
           {
-            SegmentId = segmentId,
-            CoordsInSegment = cellInfo.Coords
-          };
-          if (CanPass2(from, location, gameTurn))
-            result.PassibleCells.Add(location);
-          else
-          {
-            result.ImpassibleCells.Add(location);
+            if (!cellsAlreadyChecked.Any(c=>c.Cell.Equals(neighbourCell.Cell)))
+            {
+              cellsToCheck.Enqueue(neighbourCell);
+              result.PassibleCells.Add(neighbourCell);
+            }
           }
+          cellsAlreadyChecked.Add(neighbourCell);
         }
+
       }
+     
       return result;
+    }
+
+    private IEnumerable<PathNode> GetNeighbourCells(PathNode node)
+    {
+      var cell = node.Cell; 
+
+      return new List<PathNode>
+      {
+        new PathNode {Cell = GetLefterPathNode(cell), StepsToGet = node.StepsToGet + 1},
+        new PathNode {Cell = GetRighterPathNode(cell), StepsToGet = node.StepsToGet + 1},
+        new PathNode {Cell = GetTopPathNode(cell), StepsToGet = node.StepsToGet + 1},
+        new PathNode {Cell = GetBottomPathNode(cell), StepsToGet = node.StepsToGet + 1},
+      };
+    }
+
+    private LocationInMaze GetLefterPathNode(LocationInMaze currentLocation)
+    {
+      var segment = Segments[currentLocation.SegmentId];
+      var cellCoords = currentLocation.CoordsInSegment;
+
+      if (cellCoords.X != 0)
+        return new LocationInMaze
+        {
+          SegmentId = currentLocation.SegmentId,
+          CoordsInSegment = new Point(cellCoords.X - 1, cellCoords.Y)
+        };
+
+      var lefterSegment = currentLocation.SegmentId - 1 >= 0 ? currentLocation.SegmentId - 1 : Segments.Count - 1;
+      return new LocationInMaze
+      {
+        SegmentId = lefterSegment,
+        CoordsInSegment = new Point(((int)Math.Sqrt(segment.Matrix.GetLength(0))) - 1, cellCoords.Y)
+      };
+    }
+
+    private LocationInMaze GetRighterPathNode(LocationInMaze currentLocation)
+    {
+      var segment = Segments[currentLocation.SegmentId];
+      var cellCoords = currentLocation.CoordsInSegment;
+      var segmentSideLength = (int) Math.Sqrt(segment.Matrix.GetLength(0));//5
+      var segmentRightCoord = segmentSideLength - 1;
+
+      if (cellCoords.X != segmentRightCoord)
+        return new LocationInMaze
+        {
+          SegmentId = currentLocation.SegmentId,
+          CoordsInSegment = new Point(cellCoords.X + 1, cellCoords.Y)
+        };
+
+      var righterSegment = currentLocation.SegmentId + 1 < Segments.Count  ? currentLocation.SegmentId + 1 : 0;
+      return new LocationInMaze
+      {
+        SegmentId = righterSegment,
+        CoordsInSegment = new Point(0, cellCoords.Y)
+      };
+    }
+
+    private LocationInMaze GetTopPathNode(LocationInMaze currentLocation)
+    {
+      var segment = Segments[currentLocation.SegmentId];
+      var cellCoords = currentLocation.CoordsInSegment;
+      var segmentSideLength = (int)Math.Sqrt(segment.Matrix.GetLength(0));//5
+      
+      if (cellCoords.Y != 0)
+        return new LocationInMaze
+        {
+          SegmentId = currentLocation.SegmentId,
+          CoordsInSegment = new Point(cellCoords.X, cellCoords.Y - 1)
+        };
+
+      var isBottomRow = currentLocation.SegmentId/2 != 0;
+      int topSegmentId;
+      if (isBottomRow)
+      {
+        topSegmentId = currentLocation.SegmentId - 2;
+        return new LocationInMaze
+        {
+          SegmentId = topSegmentId,
+          CoordsInSegment = new Point(cellCoords.X, segmentSideLength - 1)
+        };
+      }
+
+      topSegmentId = currentLocation.SegmentId == 0 ? Segments.Count - 1 : currentLocation.SegmentId + 1;
+      return new LocationInMaze
+      {
+        SegmentId = topSegmentId,
+        CoordsInSegment = new Point(cellCoords.X, segmentSideLength - 1)
+      };
+    }
+
+    private LocationInMaze GetBottomPathNode(LocationInMaze currentLocation)
+    {
+      var segment = Segments[currentLocation.SegmentId];
+      var cellCoords = currentLocation.CoordsInSegment;
+      var segmentSideLength = (int)Math.Sqrt(segment.Matrix.GetLength(0));//5
+
+      if (cellCoords.Y != segmentSideLength - 1)
+        return new LocationInMaze
+        {
+          SegmentId = currentLocation.SegmentId,
+          CoordsInSegment = new Point(cellCoords.X, cellCoords.Y + 1)
+        };
+
+      var isTopRow = currentLocation.SegmentId / 2 == 0;
+      int bottomSegmentId;
+      if (isTopRow)
+      {
+        bottomSegmentId = currentLocation.SegmentId + 2;
+        return new LocationInMaze
+        {
+          SegmentId = bottomSegmentId,
+          CoordsInSegment = new Point(cellCoords.X, 0)
+        };
+      }
+
+      bottomSegmentId = currentLocation.SegmentId == Segments.Count - 1 ?  0 : currentLocation.SegmentId - 1;
+      return new LocationInMaze
+      {
+        SegmentId = bottomSegmentId,
+        CoordsInSegment = new Point(cellCoords.X, 0)
+      };
     }
 
     public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
@@ -295,6 +421,8 @@ namespace Assets.Model.Maze
 
       return true;
     }
+
+    #endregion
 
     private static readonly Dictionary<MazeActionType, double> ActionsByProbability = new Dictionary
      <MazeActionType, double>

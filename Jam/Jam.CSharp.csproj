@@ -101,11 +101,13 @@
     <Compile Include="Assets\Model\Maze\MazeObjects\Chest\AnhChest.cs" />
     <Compile Include="Assets\Model\Maze\MazeObjects\Chest\Chest.cs" />
     <Compile Include="Assets\Model\Maze\MazeObjects\Hero.cs" />
+    <Compile Include="Assets\Model\Maze\MazePassibleResult.cs" />
     <Compile Include="Assets\Model\Maze\MazeSegment.cs" />
     <Compile Include="Assets\Model\Maze\MazeSegmentEffect.cs" />
     <Compile Include="Assets\Model\Maze\Actions\MazeActionResult.cs" />
     <Compile Include="Assets\Model\Maze\MazeObjects\MazeObject.cs" />
     <Compile Include="Assets\Model\Maze\MazeSegmentEffectType.cs" />
+    <Compile Include="Assets\Model\Maze\PathNode.cs" />
     <Compile Include="Assets\Model\Player.cs" />
     <Compile Include="Assets\Model\PlayerAction.cs" />
     <Compile Include="Assets\Model\PlayerEffect.cs" />

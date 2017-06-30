@@ -73,7 +73,8 @@ namespace Assets.Model
       if (curentPlayer.ActionPoints <= 0)
         return;
       //We dont validate here
-      if(!GameState.Maze.CanPass(heroToMove.CurrentPositionInMaze, positionToMove, GameState.Turn))
+      var cellToGo = GameState.Path.FirstOrDefault(node => node.Cell.Equals(positionToMove));
+      if (cellToGo == null)
         return;
 
       var objectsOnCell = GameState.Maze.GetObjects(positionToMove);
@@ -108,12 +109,21 @@ namespace Assets.Model
       }
 
       heroToMove.Move(positionToMove);
-      OnAction();
+      OnAction(cellToGo.StepsToGet);
      
       //var objectsStandsOn = GameState.Maze.GetObjects(heroToMove.CurrentPositionInMaze);
       //if (objectsStandsOn != null && objectsStandsOn.Any(o => o.GetType().IsAssignableFrom(typeof(Chest))))
       //  return;
       //return HeroMoveResult.Default;
+    }
+
+    public void OnAction(int actionPoints)
+    {
+      GameState.CurrentPlayer.ActionPoints -= actionPoints;
+      if (ActionPointUsed != null)
+        ActionPointUsed(GameState);
+      if (GameState.CurrentPlayer.ActionPoints == 0)
+        StartNewTurn();
     }
 
     public void OnAction()

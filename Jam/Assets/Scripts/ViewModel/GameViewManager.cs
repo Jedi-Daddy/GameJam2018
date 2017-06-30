@@ -81,11 +81,11 @@ namespace Assets.Scripts.ViewModel
         Destroy(child.gameObject);
       }
 
-      foreach (var passibleCell in state.PassibleCells)
+      foreach (var passibleCell in state.Path)
       {
         var cell = Instantiate(Resources.Load("Prefabs\\passableCell")) as GameObject;
         cell.transform.SetParent(FieldContainer.transform);
-        cell.transform.localPosition = CoordsUtility.GetUiPosition(passibleCell);
+        cell.transform.localPosition = CoordsUtility.GetUiPosition(passibleCell.Cell);
       }
 
       CurrentHeroInfo.UpdateHero(state.MaxHitPoints, state.CurrentPlayer, state.CurrentHero);

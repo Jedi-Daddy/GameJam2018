@@ -33,9 +33,9 @@ namespace Assets.Model
       get { return Heroes.First(h => h.OwnerId == CurrentPlayer.Id); }
     }
 
-    public List<LocationInMaze> PassibleCells
+    public List<PathNode> Path
     {
-      get { return Maze.GetPassableCells(CurrentHero.CurrentPositionInMaze, Turn).PassibleCells; }
+      get { return Maze.GetPassableCells(CurrentHero.CurrentPositionInMaze, Turn, CurrentPlayer.ActionPoints).PassibleCells; }
     } 
 
     public bool TurnForMazeAction { get { return Turn != 0 && Turn % Players.Count(p => !p.IsDead) == 0; } }
