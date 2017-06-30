@@ -8,6 +8,11 @@ namespace Assets.Scripts.ViewModel
   {
     public GameViewManager GameUI;
 
+      //{Race.Elves, "L@g@Li$"},
+      //{Race.Ent, "Treeen2s_C@n@bi$"},
+      //{Race.Orc, "0r(rim THE GLu20n0u$"},
+      //{Race.Vampire, "M0$$Fer@2"}
+
     private void Start()
     {
       GameManager.Instance.NewTurn += GameUI.SetState;
@@ -16,23 +21,23 @@ namespace Assets.Scripts.ViewModel
       {
         new Player
         {
-          PlayerRace = Race.Ent,
-          HeroName = "John Doe"
+          PlayerRace = Race.Elves,
+          HeroName = "L@g@Li$"
         },
          new Player
         {
           PlayerRace = Race.Ent,
-          HeroName = "Жопа с ручкой"
+          HeroName = "Treeen2s_C@n@bi$"
         },
          new Player
         {
           PlayerRace = Race.Vampire,
-          HeroName = "Жопа с ручкой 2"
+          HeroName = "M0$$Fer@2"
         },
          new Player
         {
           PlayerRace = Race.Orc,
-          HeroName = "Жопа с ручкой 3"
+          HeroName = "0r(rim THE GLu20n0u$"
         }
       });
       GameUI.Initialize(GameManager.Instance.GameState);
