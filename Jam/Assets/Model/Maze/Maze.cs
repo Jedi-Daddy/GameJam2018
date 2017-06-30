@@ -56,132 +56,132 @@ namespace Assets.Model.Maze
       return result;
     }
 
-    //public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
-    //{
-    //  if(from.Equals(to))
-    //    return false;
+    public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
+    {
+      if (from.Equals(to))
+        return false;
 
-    //  var objectsOnCell = GetObjects(to);
-    //  if(objectsOnCell != null && objectsOnCell.Any(o=>!o.IsPassable))
-    //    return false;
+      var objectsOnCell = GetObjects(to);
+      if (objectsOnCell != null && objectsOnCell.Any(o => !o.IsPassable))
+        return false;
 
-    //  if (from.SegmentId == to.SegmentId)
-    //    return Segments[from.SegmentId].CanPass(from.CoordsInSegment, to.CoordsInSegment);
+      if (from.SegmentId == to.SegmentId)
+        return Segments[from.SegmentId].CanPass(from.CoordsInSegment, to.CoordsInSegment);
 
-    //  if (Segments[from.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn)
-    //    || Segments[to.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn))
-    //    return false;
+      if (Segments[from.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn)
+        || Segments[to.SegmentId].HasEffect(MazeSegmentEffectType.Blocked, currentGameTurn))
+        return false;
 
-    //  if(from.CoordsInSegment.X != to.CoordsInSegment.X && from.CoordsInSegment.Y != to.CoordsInSegment.Y)
-    //    return false;
-      
+      if (from.CoordsInSegment.X != to.CoordsInSegment.X && from.CoordsInSegment.Y != to.CoordsInSegment.Y)
+        return false;
 
-    //  var fromSegment = Segments[from.SegmentId];
-    //  var mazeSide = (int)Math.Sqrt(fromSegment.Matrix.GetLength(0));
-    //  var mazeSideCenter = mazeSide/2;
-    //  var isFromLeftGate = from.CoordsInSegment.X == 0 && from.CoordsInSegment.Y == mazeSideCenter;
-    //  var isFromRightGate = from.CoordsInSegment.X == mazeSide - 1 && from.CoordsInSegment.Y == mazeSideCenter;
-    //  var isFromTopGate = from.CoordsInSegment.Y == 0 && from.CoordsInSegment.X == mazeSideCenter;
-    //  var isFromBottomGate = from.CoordsInSegment.Y == mazeSide - 1 && from.CoordsInSegment.X == mazeSideCenter;
 
-    //  var isToLeftGate  = to.CoordsInSegment.X == 0 && to.CoordsInSegment.Y == mazeSideCenter;
-    //  var isToRightGate = to.CoordsInSegment.X == mazeSide - 1 && to.CoordsInSegment.Y == mazeSideCenter;
-    //  var isToTopGate = to.CoordsInSegment.Y == 0 && to.CoordsInSegment.X == mazeSideCenter;
-    //  var isToBottomGate = to.CoordsInSegment.Y == mazeSide - 1 && to.CoordsInSegment.X == mazeSideCenter;
+      var fromSegment = Segments[from.SegmentId];
+      var mazeSide = (int)Math.Sqrt(fromSegment.Matrix.GetLength(0));
+      var mazeSideCenter = mazeSide / 2;
+      var isFromLeftGate = from.CoordsInSegment.X == 0 && from.CoordsInSegment.Y == mazeSideCenter;
+      var isFromRightGate = from.CoordsInSegment.X == mazeSide - 1 && from.CoordsInSegment.Y == mazeSideCenter;
+      var isFromTopGate = from.CoordsInSegment.Y == 0 && from.CoordsInSegment.X == mazeSideCenter;
+      var isFromBottomGate = from.CoordsInSegment.Y == mazeSide - 1 && from.CoordsInSegment.X == mazeSideCenter;
 
-    //  var isFromFirstRow = from.SegmentId/2 == 0;
-    //  var isFromFirstColumn = from.SegmentId % 2 == 0;
-    //  var onSameRow = from.SegmentId/2 == to.SegmentId/2;
-    //  var onSameColumn = from.SegmentId % 2 == to.SegmentId % 2;
+      var isToLeftGate = to.CoordsInSegment.X == 0 && to.CoordsInSegment.Y == mazeSideCenter;
+      var isToRightGate = to.CoordsInSegment.X == mazeSide - 1 && to.CoordsInSegment.Y == mazeSideCenter;
+      var isToTopGate = to.CoordsInSegment.Y == 0 && to.CoordsInSegment.X == mazeSideCenter;
+      var isToBottomGate = to.CoordsInSegment.Y == mazeSide - 1 && to.CoordsInSegment.X == mazeSideCenter;
 
-    //  if (!isFromRightGate && !isFromLeftGate && !isFromTopGate && !isFromBottomGate)
-    //    return false;
+      var isFromFirstRow = from.SegmentId / 2 == 0;
+      var isFromFirstColumn = from.SegmentId % 2 == 0;
+      var onSameRow = from.SegmentId / 2 == to.SegmentId / 2;
+      var onSameColumn = from.SegmentId % 2 == to.SegmentId % 2;
 
-    //  if (!isToRightGate && !isToLeftGate && !isToTopGate && !isToBottomGate)
-    //    return false;
+      if (!isFromRightGate && !isFromLeftGate && !isFromTopGate && !isFromBottomGate)
+        return false;
 
-    //  if (isFromRightGate)
-    //  {
-    //    if(!isToLeftGate)
-    //      return false;
+      if (!isToRightGate && !isToLeftGate && !isToTopGate && !isToBottomGate)
+        return false;
 
-    //    var neighbourSegment = (to.SegmentId - from.SegmentId) == 1;
+      if (isFromRightGate)
+      {
+        if (!isToLeftGate)
+          return false;
 
-    //    if (!neighbourSegment)
-    //    {
-    //      var isDiagonal = (!onSameColumn && !onSameRow);
-    //      if(!isDiagonal)
-    //        return false;
+        var neighbourSegment = (to.SegmentId - from.SegmentId) == 1;
 
-    //      if (isDiagonal && (from.SegmentId == 0 && from.CoordsInSegment.X != 0))
-    //        return false;
+        if (!neighbourSegment)
+        {
+          var isDiagonal = (!onSameColumn && !onSameRow);
+          if (!isDiagonal)
+            return false;
 
-    //      if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
-    //        return false;
-    //      if (isDiagonal && (from.SegmentId == 2 && from.CoordsInSegment.X == mazeSide -1))
-    //        return false;
-    //    }
-    //    //)}
-    //    //  return false;
+          if (isDiagonal && (from.SegmentId == 0 && from.CoordsInSegment.X != 0))
+            return false;
 
-    //  }
+          if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
+            return false;
+          if (isDiagonal && (from.SegmentId == 2 && from.CoordsInSegment.X == mazeSide - 1))
+            return false;
+        }
+        //)}
+        //  return false;
 
-    //  if (isFromLeftGate)
-    //  {
-    //    if(!isToRightGate)
-    //      return false;
+      }
 
-    //    var isDiagonal = (!onSameColumn && !onSameRow); 
-    //    if (((from.SegmentId - to.SegmentId) != 1) && (!isDiagonal || from.SegmentId == 1))
-    //      return false;
+      if (isFromLeftGate)
+      {
+        if (!isToRightGate)
+          return false;
 
-    //    if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
-    //      return false;
-    //  }
+        var isDiagonal = (!onSameColumn && !onSameRow);
+        if (((from.SegmentId - to.SegmentId) != 1) && (!isDiagonal || from.SegmentId == 1))
+          return false;
 
-    //  if (isFromTopGate)
-    //  {
-    //    if(!isToBottomGate)
-    //      return false;
+        if (isDiagonal && (from.SegmentId == 3 && from.CoordsInSegment.X == 0))
+          return false;
+      }
 
-    //    if (isFromFirstRow)
-    //    {
-    //      if (isFromFirstColumn && to.SegmentId != 3)
-    //        return false;
-    //      if(!isFromFirstColumn && to.SegmentId != 2)
-    //        return false;
-    //    }
-    //    else
-    //    {
-    //      if (isFromFirstColumn && to.SegmentId != 0)
-    //        return false;
-    //      if (!isFromFirstColumn && to.SegmentId != 1)
-    //        return false;
-    //    }
-    //  }
+      if (isFromTopGate)
+      {
+        if (!isToBottomGate)
+          return false;
 
-    //  if (isFromBottomGate)
-    //  {
-    //    if(!isToTopGate)
-    //      return false;
+        if (isFromFirstRow)
+        {
+          if (isFromFirstColumn && to.SegmentId != 3)
+            return false;
+          if (!isFromFirstColumn && to.SegmentId != 2)
+            return false;
+        }
+        else
+        {
+          if (isFromFirstColumn && to.SegmentId != 0)
+            return false;
+          if (!isFromFirstColumn && to.SegmentId != 1)
+            return false;
+        }
+      }
 
-    //    if (isFromFirstRow)
-    //    {
-    //      if (isFromFirstColumn && to.SegmentId != 2)
-    //        return false;
-    //      if (!isFromFirstColumn && to.SegmentId != 3)
-    //        return false;
-    //    }
-    //    else
-    //    {
-    //      if (isFromFirstColumn && to.SegmentId != 1)
-    //        return false;
-    //      if (!isFromFirstColumn && to.SegmentId != 0)
-    //        return false;
-    //    }
-    //  }
-    //  return true;
-    //}
+      if (isFromBottomGate)
+      {
+        if (!isToTopGate)
+          return false;
+
+        if (isFromFirstRow)
+        {
+          if (isFromFirstColumn && to.SegmentId != 2)
+            return false;
+          if (!isFromFirstColumn && to.SegmentId != 3)
+            return false;
+        }
+        else
+        {
+          if (isFromFirstColumn && to.SegmentId != 1)
+            return false;
+          if (!isFromFirstColumn && to.SegmentId != 0)
+            return false;
+        }
+      }
+      return true;
+    }
 
     public bool CanPass2(LocationInMaze from, LocationInMaze to, int currentGameTurn, bool checkPassibility = true)
     {
@@ -295,8 +295,6 @@ namespace Assets.Model.Maze
 
       return true;
     }
-
-
 
     private static readonly Dictionary<MazeActionType, double> ActionsByProbability = new Dictionary
      <MazeActionType, double>
