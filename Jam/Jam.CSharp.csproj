@@ -108,6 +108,7 @@
     <Compile Include="Assets\Model\Maze\MazeObjects\MazeObject.cs" />
     <Compile Include="Assets\Model\Maze\MazeSegmentEffectType.cs" />
     <Compile Include="Assets\Model\Maze\PathNode.cs" />
+    <Compile Include="Assets\Model\Maze\PathNodeEqualityComparer.cs" />
     <Compile Include="Assets\Model\Player.cs" />
     <Compile Include="Assets\Model\PlayerAction.cs" />
     <Compile Include="Assets\Model\PlayerEffect.cs" />

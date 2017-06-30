@@ -35,7 +35,6 @@ namespace Assets.Model.Maze
         Cell = from,
         StepsToGet = 0
       });
-      var cellsAlreadyChecked = new HashSet<PathNode>();
       while (cellsToCheck.Count > 0)
       {
         var cellToGoFrom = cellsToCheck.Dequeue();
@@ -47,19 +46,24 @@ namespace Assets.Model.Maze
 
           if (CanPass(cellToGoFrom.Cell, neighbourCell.Cell, gameTurn))
           {
-            if (!cellsAlreadyChecked.Any(c=>c.Cell.Equals(neighbourCell.Cell)))
-            {
-              cellsToCheck.Enqueue(neighbourCell);
-              result.PassibleCells.Add(neighbourCell);
-            }
+            cellsToCheck.Enqueue(neighbourCell);
+            result.PassibleCells.Add(neighbourCell);
           }
-          cellsAlreadyChecked.Add(neighbourCell);
         }
-
       }
-     
+      result.PassibleCells = result.PassibleCells.Distinct(new PathNodeEqualityComparer()).ToList();
       return result;
     }
+
+    //public List<LocationInMaze> GetSeeableCells(LocationInMaze from, int gameTurn)
+    //{
+    //  var result = new List<LocationInMaze>();
+    //  for (var cell = from;;)
+    //  {
+    //    var topCell = GetTopPathNode(cell);
+    //    if(CanPass(cell, topCell, gameTurn, false))
+    //  }
+    //}
 
     private IEnumerable<PathNode> GetNeighbourCells(PathNode node)
     {
@@ -182,13 +186,13 @@ namespace Assets.Model.Maze
       };
     }
 
-    public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn)
+    public bool CanPass(LocationInMaze from, LocationInMaze to, int currentGameTurn, bool checkImpassibleObjects = true)
     {
       if (from.Equals(to))
         return false;
 
       var objectsOnCell = GetObjects(to);
-      if (objectsOnCell != null && objectsOnCell.Any(o => !o.IsPassable))
+      if (checkImpassibleObjects && objectsOnCell != null && objectsOnCell.Any(o => !o.IsPassable))
         return false;
 
       if (from.SegmentId == to.SegmentId)
